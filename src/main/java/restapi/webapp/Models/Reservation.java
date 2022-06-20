@@ -8,19 +8,24 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data // For Lombok auto-generated methods
-@Entity // JPA annotation to make the object storable SQL-based DB
+@Data
+@Entity
 @NoArgsConstructor
-public class ShowTime {
-
+public class Reservation {
     @Id
     @GeneratedValue
     private Long id;
+    private Double price;
+    private LocalDateTime orderTime;
     private LocalDateTime startTime;
 
-    @ManyToOne
-    private Movie movie;
-
     @OneToMany
-    private List<SeatPackage> seatPackage = new ArrayList<SeatPackage>();
+    List<SeatPackage> seatPackage = new ArrayList<SeatPackage>();
+
+    @ManyToOne
+    private CostumerUser costumerUser;
+
+    @OneToOne
+    private ShowTime showTime;
+
 }
