@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import restapi.webapp.Models.Movie;
+import restapi.webapp.Repositories.MovieRepos;
 import restapi.webapp.Services.MovieService;
 
 import java.util.concurrent.CompletableFuture;
@@ -13,11 +14,13 @@ import java.util.concurrent.CompletableFuture;
 public class AsyncRunner implements CommandLineRunner {
     private final UserService userService;
     private final MovieService movieService;
+    private final MovieRepos movieRepos;
     private static final Logger classLogger = LoggerFactory.getLogger(AsyncRunner.class);
 
-    public AsyncRunner(UserService userService, MovieService movieService) {
+    public AsyncRunner(UserService userService, MovieService movieService, MovieRepos movieRepos) {
         this.userService = userService;
         this.movieService = movieService;
+        this.movieRepos = movieRepos;
     }
 
     @Override
@@ -50,8 +53,12 @@ public class AsyncRunner implements CommandLineRunner {
         classLogger.info("User2 = " + user2.get());
         classLogger.info("User3 = " + user3.get());
 
+        Movie mov = movie.get();
+        classLogger.info("movie = " + mov);
 
-        classLogger.info("movie = " + movie.get());
+        movieRepos.save(mov);
+//        classLogger.info("movie from db: " + movieRepos.findById(mov.getId()));
+
 
 
     }

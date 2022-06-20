@@ -12,6 +12,7 @@ import restapi.webapp.Models.Movie;
 import restapi.webapp.Repositories.MovieRepos;
 import restapi.webapp.Services.MovieService;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -35,9 +36,14 @@ public class MoviesController {
 //    }
 
 
-    @GetMapping("/MoviesNOTFINISHED")
-    public ResponseEntity<CollectionModel<EntityModel<Movie>>> profilePosts() {
-        return ResponseEntity.ok(
-                movieEntityFactory.toCollectionModel(movieRepos.findAll()));
+//    @GetMapping("/MoviesNOTFINISHED")
+//    public ResponseEntity<CollectionModel<EntityModel<Movie>>> profilePosts() {
+//        return ResponseEntity.ok(
+//                movieEntityFactory.toCollectionModel(movieRepos.findAll()));
+//    }
+
+    @GetMapping("/Movies")
+    public List<Movie> profilePosts() {
+        return (List<Movie>) movieRepos.findAll();
     }
 }
