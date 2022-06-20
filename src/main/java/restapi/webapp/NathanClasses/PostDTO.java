@@ -1,8 +1,9 @@
-package restapi.webapp;
+package restapi.webapp.NathanClasses;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Value;
+import restapi.webapp.NathanClasses.Post;
 
 @Value
 @JsonPropertyOrder({"id", "title", "greeting"})

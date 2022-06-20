@@ -1,9 +1,5 @@
-package restapi.webapp;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+package restapi.webapp.NathanClasses;
 
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.server.SimpleRepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 @Component

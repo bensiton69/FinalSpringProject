@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 import restapi.webapp.Enums.eGenre;
 //import restapi.webapp.Enums.eGenre;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +23,9 @@ public class Movie {
     private String link;
     private int duration;
     private int yearOfPublish;
-//    private eGenre[] genres;
+
+//    @Enumerated(EnumType.STRING)
+//    private eGenre[] genre = new eGenre[]();
 
     @OneToMany
     private List<ShowTime> showTimes = new ArrayList<ShowTime>();

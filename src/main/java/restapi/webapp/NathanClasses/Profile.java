@@ -1,12 +1,14 @@
-package restapi.webapp;
+package restapi.webapp.NathanClasses;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import restapi.webapp.NathanClasses.Post;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;

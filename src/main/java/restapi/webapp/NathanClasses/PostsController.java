@@ -1,4 +1,4 @@
-package restapi.webapp;
+package restapi.webapp.NathanClasses;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;

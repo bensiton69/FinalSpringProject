@@ -1,11 +1,10 @@
-package restapi.webapp;
+package restapi.webapp.NathanClasses;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.catalina.Manager;
+
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Data // For Lombok auto-generated methods
 @Entity // JPA annotation to make the object storable SQL-based DB

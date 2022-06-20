@@ -7,16 +7,15 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadPoolExecutor;
 
 // SpringBootApplication is a meta-annotation that
 // pulls in component scanning, autoconfiguration, and property support.
 @SpringBootApplication
 @EnableAsync
-public class InventoryApplication {
+public class CinemaApi {
 
 	public static void main(String... args) {
-		SpringApplication.run(InventoryApplication.class, args);
+		SpringApplication.run(CinemaApi.class, args);
 	}
 
 	@Bean

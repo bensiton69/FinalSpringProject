@@ -1,10 +1,12 @@
 package restapi.webapp;
 
-import org.apache.catalina.Manager;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
+import restapi.webapp.NathanClasses.Post;
+import restapi.webapp.NathanClasses.PostRepo;
+import restapi.webapp.NathanClasses.Profile;
+import restapi.webapp.NathanClasses.ProfileRepo;
 
 import java.util.Arrays;
 

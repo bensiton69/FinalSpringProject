@@ -1,9 +1,7 @@
-package restapi.webapp;
+package restapi.webapp.NathanClasses;
 
-import org.apache.catalina.Manager;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.server.LinkRelationProvider;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

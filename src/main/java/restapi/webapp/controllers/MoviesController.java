@@ -10,12 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import restapi.webapp.Factories.MovieEntityFactory;
 import restapi.webapp.Models.Movie;
-import restapi.webapp.Post;
 import restapi.webapp.Repositories.MovieRepos;
 import restapi.webapp.Services.MovieService;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @RestController
 public class MoviesController {

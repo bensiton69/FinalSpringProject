@@ -4,7 +4,6 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Component;
 import restapi.webapp.Models.Movie;
-import restapi.webapp.SimpleIdentifiableRepresentationModelAssembler;
 import org.springframework.hateoas.server.SimpleRepresentationModelAssembler;
 import restapi.webapp.controllers.MoviesController;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;

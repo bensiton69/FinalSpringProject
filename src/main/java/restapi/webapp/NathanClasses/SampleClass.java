@@ -1,4 +1,4 @@
-package restapi.webapp;
+package restapi.webapp.NathanClasses;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

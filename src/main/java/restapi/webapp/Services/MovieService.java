@@ -21,7 +21,6 @@ public class MovieService {
     public CompletableFuture<Movie> singleMovie(int id){
         String urlTemplate = String.format("http://localhost:8081/Movies/%s", id);
         Movie aMovie = this.template.getForObject(urlTemplate,Movie.class);
-        System.out.println(aMovie);
         /*
          return a CompletableFuture<GitHubUser> when the computation is done
          this goes hand-with-hand with the join() method

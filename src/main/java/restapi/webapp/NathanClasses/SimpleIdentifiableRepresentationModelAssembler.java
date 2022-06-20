@@ -1,4 +1,4 @@
-package restapi.webapp;
+package restapi.webapp.NathanClasses;
 
 /*
  * Copyright 2017 the original author or authors.

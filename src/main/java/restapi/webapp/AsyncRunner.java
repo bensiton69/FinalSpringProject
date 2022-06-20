@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import restapi.webapp.Models.Movie;
+import restapi.webapp.NathanClasses.GitHubUser;
+import restapi.webapp.NathanClasses.UserService;
 import restapi.webapp.Repositories.MovieRepos;
 import restapi.webapp.Services.MovieService;
 
@@ -53,6 +55,7 @@ public class AsyncRunner implements CommandLineRunner {
         classLogger.info("User2 = " + user2.get());
         classLogger.info("User3 = " + user3.get());
 
+//        Movie mov = movie.get();
         Movie mov = movie.get();
         classLogger.info("movie = " + mov);
 
