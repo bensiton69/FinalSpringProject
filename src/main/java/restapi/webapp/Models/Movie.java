@@ -31,7 +31,7 @@ public class Movie {
 
 //    @JsonIgnore
 //    @Enumerated(EnumType.STRING)
-//    private eGenre[] genre;
+//    private eGenre[] genres;
 
     @OneToMany
     private List<ShowTime> showTimes = new ArrayList<ShowTime>();
