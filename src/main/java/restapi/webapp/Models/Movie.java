@@ -28,8 +28,8 @@ public class Movie {
     private int yearOfPublish;
 //    private eGenre[] genres;
 
-//    @OneToMany
-//    private List<ShowTime> showTimes = new ArrayList<ShowTime>();
+    @OneToMany
+    private List<ShowTime> showTimes = new ArrayList<ShowTime>();
 
 
     @Override
@@ -40,6 +40,7 @@ public class Movie {
                 ", link='" + link + '\'' +
                 ", duration=" + duration +
                 ", yearOfPublish=" + yearOfPublish +
+                ", showTimes=" + showTimes +
                 '}';
     }
 }
