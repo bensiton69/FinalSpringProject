@@ -43,5 +43,11 @@ public class AsyncRunner implements CommandLineRunner {
 
         movieRepos.save(mov);
 
+        Seed();
+
+    }
+
+    private void Seed() {
+
     }
 }
