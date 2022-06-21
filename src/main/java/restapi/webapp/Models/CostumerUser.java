@@ -17,9 +17,16 @@ public class CostumerUser extends AbstractUser {
     @OneToMany
     List<Reservation> Reservations = new ArrayList<Reservation>();
 
-    public CostumerUser(Long id, String username) {
-        super(id, username);}
+    public CostumerUser(String username) {
+        super(username);}
 
+    @Override
+    public String toString() {
+        return super.toString() +
+                "CostumerUser{" +
+                "Reservations=" + Reservations +
+                '}';
+    }
 }
 
 

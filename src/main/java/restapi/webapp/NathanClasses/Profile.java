@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import restapi.webapp.NathanClasses.Post;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,10 +25,10 @@ public class Profile {
     // JPA @OneToMany annotation indicating the relationship between Profile & Employee
     // is stored in the database tables in Post "profile" property,
     // i.e. profile’s primary key will be stored as a foreign key in the POSTS table.
-    @JsonIgnore
-    @OneToMany(mappedBy = "profile")
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "profile")
     // Eager Loading to avoid NullPointerException
-    private List<Post> posts = new ArrayList<>();
+//    private List<Post> posts = new ArrayList<>();
 
     public Profile(String fullName){
         this.fullName = fullName;

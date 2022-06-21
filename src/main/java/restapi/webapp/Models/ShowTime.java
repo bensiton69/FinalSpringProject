@@ -23,4 +23,9 @@ public class ShowTime {
 
     @OneToMany
     private List<SeatPackage> seatPackage = new ArrayList<SeatPackage>();
+
+    public ShowTime(LocalDateTime startTime, Movie movie) {
+        this.startTime = startTime;
+        this.movie = movie;
+    }
 }

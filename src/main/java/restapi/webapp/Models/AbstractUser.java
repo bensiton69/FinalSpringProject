@@ -16,8 +16,17 @@ public abstract class AbstractUser {
     private Long id;
     private String username;
 
-    public AbstractUser(Long id, String username) {
-        this.id = id;
+    @Override
+    public String toString() {
+        return "AbstractUser{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                '}';
+    }
+
+    public AbstractUser(String username) {
         this.username = username;
     }
+
+
 }
