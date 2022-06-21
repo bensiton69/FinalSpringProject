@@ -1,12 +1,13 @@
 package restapi.webapp.Dtos;
 
+import restapi.webapp.Builders.IHasId;
 import restapi.webapp.Models.Movie;
 import restapi.webapp.Models.ShowTime;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieDto {
+public class MovieDto implements IHasId {
 
     private Long id;
     private String name;
@@ -18,15 +19,7 @@ public class MovieDto {
     private String[] genres;
     private List<KeyValuePair> showTimes = new ArrayList<KeyValuePair>();
 
-    public MovieDto(Movie m) {
-        id = m.getId();
-        name = m.getName();
-        link = m.getLink();
-        duration = m.getDuration();
-        yearOfPublish = m.getYearOfPublish();
-        genres = m.getGenres();
-        setShowTimesAsSTlist(m.getShowTimes());
-
+    public MovieDto() {
     }
 
     public Long getId() {
@@ -90,5 +83,9 @@ public class MovieDto {
         {
             this.showTimes.add(new KeyValuePair(showTime.getId(), showTime.getStartTime().toString()));
         }
+    }
+
+    public void AddShowTimesAsKVP(KeyValuePair keyValuePair) {
+        showTimes.add(keyValuePair);
     }
 }

@@ -9,16 +9,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import restapi.webapp.Builders.BuilderEntityFactory;
+import restapi.webapp.Builders.IControllerInterface;
 import restapi.webapp.Dtos.MovieDto;
 import restapi.webapp.Factories.MovieEntityFactory;
+import restapi.webapp.Mappers.MapperCinema;
 import restapi.webapp.Models.Movie;
 import restapi.webapp.Repositories.MovieRepos;
 import restapi.webapp.Services.MovieService;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @RestController
-public class MoviesController {
+public class MoviesController implements IControllerInterface<MovieDto> {
     private final MovieRepos movieRepos;
     private final MovieService movieService;
     private final MovieEntityFactory movieEntityFactory;
@@ -50,10 +55,55 @@ public class MoviesController {
     }
 
     @GetMapping("/MoviesAsDto")
-    public MovieDto getMoviesAsDto() {
+    public ResponseEntity<List<MovieDto>> getMoviesAsDto() {
+        logger.info("--> getMoviesAsDto()");
+
         List<Movie> movies = (List<Movie>) movieRepos.findAll();
         Movie m = movies.get(0);
-        MovieDto movieDto = new MovieDto(m);
-        return movieDto;
+//        MovieDto movieDto = MapperCinema.MapFromMovieToMovieGetDto(m);
+
+        return ResponseEntity.ok(
+                        StreamSupport.stream(movieRepos.findAll().spliterator(),
+                                        false)
+                                .map(MapperCinema::MapFromMovieToMovieGetDto) //
+                                .collect(Collectors.toList()));
+    }
+
+
+    @GetMapping("/MoviesAsTest")
+    public ResponseEntity<List<MovieDto>> MoviesAsTest() {
+        logger.info("--> MoviesAsTest()");
+
+        List<Movie> movies = (List<Movie>) movieRepos.findAll();
+        Movie m = movies.get(0);
+//        MovieDto movieDto = MapperCinema.MapFromMovieToMovieGetDto(m);
+
+        return ResponseEntity.ok(
+                StreamSupport.stream(movieRepos.findAll().spliterator(),
+                                false)
+                        .map(MapperCinema::MapFromMovieToMovieGetDto) //
+                        .collect(Collectors.toList()));
+    }
+
+    @GetMapping("/getById/{id}")
+    @Override
+    public ResponseEntity<EntityModel<MovieDto>> getById(Long id) {
+        BuilderEntityFactory<MovieDto> movieDtoBuilderEntityFactory = new BuilderEntityFactory<>(this);
+        return movieRepos.findById(id) // Post object
+                .map(MapperCinema::MapFromMovieToMovieGetDto) //
+                .map(movieDtoBuilderEntityFactory::toModel) //
+                .map(ResponseEntity::ok) //
+                .orElse(ResponseEntity.notFound().build());    }
+
+    @GetMapping("/getAsResponseEntity")
+    @Override
+    public ResponseEntity<CollectionModel<EntityModel<MovieDto>>> getAsResponseEntity() {
+        BuilderEntityFactory<MovieDto> movieDtoBuilderEntityFactory = new BuilderEntityFactory<>(this);
+        return ResponseEntity.ok(
+                movieDtoBuilderEntityFactory.toCollectionModel(
+                        StreamSupport.stream(movieRepos.findAll().spliterator(),
+                                        false)
+                                .map(MapperCinema::MapFromMovieToMovieGetDto) //
+                                .collect(Collectors.toList())));
     }
 }

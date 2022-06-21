@@ -26,6 +26,5 @@ public class MovieEntityFactory implements SimpleRepresentationModelAssembler<Mo
     @Override
     public void addLinks(CollectionModel<EntityModel<Movie>> resources) {
         resources.add(linkTo(methodOn(MoviesController.class).getMoviesAsResponseEntity()).withSelfRel());
-
     }
 }

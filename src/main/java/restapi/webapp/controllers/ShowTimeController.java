@@ -11,7 +11,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import restapi.webapp.Dtos.MovieDto;
+import restapi.webapp.Dtos.ShowTimeDto;
+import restapi.webapp.Mappers.MapperCinema;
 import restapi.webapp.Models.ShowTime;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -38,6 +45,15 @@ public class ShowTimeController {
     @GetMapping("/ShowTimesAsResponseEntity")
     public ResponseEntity<CollectionModel<EntityModel<ShowTime>>> getShowTimesAsResponseEntity(){
         return ResponseEntity.ok(showTimeEntityFactory.toCollectionModel(showTimeRepos.findAll()));
+    }
+
+    @GetMapping("/ShowTimesAsResponseEntityDTO")
+    public ResponseEntity<List<ShowTimeDto>> getShowTimesAsResponseEntityDTO(){
+        return ResponseEntity.ok(
+                StreamSupport.stream(showTimeRepos.findAll().spliterator(),
+                                false)
+                        .map(MapperCinema::MapFromShowTimeToShowTimeDto)
+                        .collect(Collectors.toList()));
     }
 
 }
