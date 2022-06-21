@@ -2,6 +2,7 @@ package restapi.webapp.Models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -21,8 +22,9 @@ public class ShowTime {
     @ManyToOne
     private Movie movie;
 
-    @OneToMany
-    private List<SeatPackage> seatPackage = new ArrayList<SeatPackage>();
+//    @OneToMany
+//    @JsonIgnore
+//    private List<SeatPackage> seatPackage = new ArrayList<SeatPackage>();
 
     public ShowTime(LocalDateTime startTime, Movie movie) {
         this.startTime = startTime;

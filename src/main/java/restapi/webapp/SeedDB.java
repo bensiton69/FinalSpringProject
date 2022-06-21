@@ -11,8 +11,11 @@ import restapi.webapp.Models.ShowTime;
 import restapi.webapp.Repositories.MovieRepos;
 import restapi.webapp.Repositories.UserRepos;
 import restapi.webapp.Services.InitShowTimeService;
+import restapi.webapp.controllers.ShowTimeRepos;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 // class declares one or one @Bean method
@@ -22,7 +25,12 @@ class SeedDB {
 
     @Bean
     // CommandLineRunner beans once the application context is loaded.
-    CommandLineRunner initDatabase(AsyncRunner asyncRunner ,UserRepos userRepos, MovieRepos movieRepos, InitShowTimeService initShowTimeService) {
+    CommandLineRunner initDatabase(
+            AsyncRunner asyncRunner ,
+            UserRepos userRepos,
+            MovieRepos movieRepos,
+            InitShowTimeService initShowTimeService,
+            ShowTimeRepos showTimeRepos) {
         // runner gets a copy of the new DB and creates the following
         // products and saves them
         return args -> {
@@ -35,6 +43,12 @@ class SeedDB {
 
             Movie hp1 = movieRepos.findById(new Long(1)).get();
             ShowTime showTime1 = new ShowTime(LocalDateTime.now().plusHours(2),hp1);
+            showTimeRepos.save(showTime1);
+            List<ShowTime> showTimes = new ArrayList<>();
+            showTimes.add(showTime1);
+
+            hp1.setShowTimes(showTimes);
+            movieRepos.save(hp1);
         };
     }
 }

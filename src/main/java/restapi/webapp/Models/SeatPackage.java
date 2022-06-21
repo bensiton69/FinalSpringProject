@@ -12,7 +12,7 @@ import java.util.UUID;
 public class SeatPackage {
     @Id
     @GeneratedValue
-    private UUID id;
+    private Long id;
     private boolean isAvailable;
 
     @OneToOne

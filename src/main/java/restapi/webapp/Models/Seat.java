@@ -13,11 +13,10 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Seat {
     @Id @GeneratedValue
-    private UUID id;
+    private Long id;
 
     private int row;
     private int col;
-
 
 }
 

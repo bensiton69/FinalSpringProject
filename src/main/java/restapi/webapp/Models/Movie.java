@@ -49,4 +49,8 @@ public class Movie {
                 ", showTimes=" + showTimes +
                 '}';
     }
+
+    public void addShowTimes(ShowTime showTime) {
+        showTimes.add(showTime);
+    }
 }

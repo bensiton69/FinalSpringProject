@@ -1,5 +1,6 @@
 package restapi.webapp.controllers;
 
+import org.apache.catalina.mapper.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.CollectionModel;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import restapi.webapp.Dtos.MovieDto;
 import restapi.webapp.Factories.MovieEntityFactory;
 import restapi.webapp.Models.Movie;
 import restapi.webapp.Repositories.MovieRepos;
@@ -45,5 +47,13 @@ public class MoviesController {
     @GetMapping("/MoviesAsResponseEntity")
     public ResponseEntity<CollectionModel<EntityModel<Movie>>> getMoviesAsResponseEntity() {
         return ResponseEntity.ok(movieEntityFactory.toCollectionModel(movieRepos.findAll()));
+    }
+
+    @GetMapping("/MoviesAsDto")
+    public MovieDto getMoviesAsDto() {
+        List<Movie> movies = (List<Movie>) movieRepos.findAll();
+        Movie m = movies.get(0);
+        MovieDto movieDto = new MovieDto(m);
+        return movieDto;
     }
 }
