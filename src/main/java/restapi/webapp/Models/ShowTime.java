@@ -3,6 +3,7 @@ package restapi.webapp.Models;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.minidev.json.annotate.JsonIgnore;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -22,12 +23,25 @@ public class ShowTime {
     @ManyToOne
     private Movie movie;
 
-//    @OneToMany
-//    @JsonIgnore
-//    private List<SeatPackage> seatPackage = new ArrayList<SeatPackage>();
+    @OneToMany(mappedBy = "showTime")
+    private List<SeatPackage> seatPackages;
+
 
     public ShowTime(LocalDateTime startTime, Movie movie) {
         this.startTime = startTime;
         this.movie = movie;
+    }
+
+    @Override
+    public String toString() {
+        return "ShowTime{" +
+                "id=" + id +
+                ", startTime=" + startTime +
+                ", movie=" + movie +
+                '}';
+    }
+
+    public void AddSeatPackage(SeatPackage seatPackage){
+        seatPackages.add(seatPackage);
     }
 }

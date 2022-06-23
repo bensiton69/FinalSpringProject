@@ -1,10 +1,12 @@
-package restapi.webapp.controllers;
+package restapi.webapp.Factories;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.SimpleRepresentationModelAssembler;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 import restapi.webapp.Models.ShowTime;
+import restapi.webapp.controllers.ShowTimeController;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -15,7 +17,7 @@ public class ShowTimeEntityFactory implements SimpleRepresentationModelAssembler
     @Override
     public void addLinks(EntityModel<ShowTime> resource) {
         resource.add(
-                linkTo(methodOn(ShowTimeController.class).getShowTimeById(resource.getContent().getId()))
+                WebMvcLinkBuilder.linkTo(methodOn(ShowTimeController.class).getShowTimeById(resource.getContent().getId()))
                         .withSelfRel());
 
         resource.add(

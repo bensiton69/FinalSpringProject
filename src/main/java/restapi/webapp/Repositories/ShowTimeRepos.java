@@ -1,4 +1,4 @@
-package restapi.webapp.controllers;
+package restapi.webapp.Repositories;
 
 import org.springframework.data.repository.CrudRepository;
 import restapi.webapp.Models.ShowTime;

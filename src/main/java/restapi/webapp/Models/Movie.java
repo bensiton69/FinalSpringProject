@@ -5,10 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.minidev.json.annotate.JsonIgnore;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import restapi.webapp.Enums.eGenre;
 //import restapi.webapp.Enums.eGenre;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
+@EnableTransactionManagement
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Movie {
     @Id

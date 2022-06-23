@@ -3,9 +3,13 @@ package restapi.webapp.Mappers;
 import org.springframework.stereotype.Component;
 import restapi.webapp.Dtos.KeyValuePair;
 import restapi.webapp.Dtos.MovieDto;
+import restapi.webapp.Dtos.SeatPackageDto;
 import restapi.webapp.Dtos.ShowTimeDto;
 import restapi.webapp.Models.Movie;
+import restapi.webapp.Models.SeatPackage;
 import restapi.webapp.Models.ShowTime;
+
+import java.util.stream.Collectors;
 
 //TODO: implements IMapperCinema
 public class MapperCinema {
@@ -37,12 +41,28 @@ public class MapperCinema {
         showTimeDto.setStartTime(showTime.getStartTime());
         showTimeDto.setId(showTime.getId());
         showTimeDto.setMovie(MapFromMovieToKVP(showTime.getMovie()));
+        showTimeDto.setSeatPackage(
+                showTime.getSeatPackages()
+                        .stream()
+                        .map(MapperCinema::MapFromSeatPackageToSeatPackageDto)
+                        .collect(Collectors.toList()));
 
         return showTimeDto;
     }
 
     private static KeyValuePair MapFromMovieToKVP(Movie movie) {
         return new KeyValuePair(movie.getId(), movie.getName());
+    }
+
+    public static SeatPackageDto MapFromSeatPackageToSeatPackageDto(SeatPackage seatPackage)
+    {
+        SeatPackageDto seatPackageDto = new SeatPackageDto();
+        seatPackageDto.setAvailable(seatPackage.isAvailable());
+        seatPackageDto.setId(seatPackage.getId());
+        seatPackageDto.setCol(seatPackage.getCol());
+        seatPackageDto.setRow(seatPackage.getRow());
+
+        return seatPackageDto;
     }
 
     //from DTO to DAO
