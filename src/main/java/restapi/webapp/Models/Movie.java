@@ -1,24 +1,18 @@
 package restapi.webapp.Models;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import restapi.webapp.Enums.eGenre;
-//import restapi.webapp.Enums.eGenre;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Data
 @Entity
+@Table(name = "Movie")
 @NoArgsConstructor
-@EnableTransactionManagement
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Movie {
     @Id
@@ -28,17 +22,15 @@ public class Movie {
     private String link;
     private int duration;
     private int yearOfPublish;
-
     //TODO: Transfer to enum
     private String[] genres;
 
-//    @JsonIgnore
-//    @Enumerated(EnumType.STRING)
-//    private eGenre[] genres;
-
-    @OneToMany
+    @OneToMany(
+            mappedBy = "movie",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<ShowTime> showTimes = new ArrayList<ShowTime>();
-
 
     @Override
     public String toString() {
@@ -53,7 +45,11 @@ public class Movie {
                 '}';
     }
 
-    public void addShowTimes(ShowTime showTime) {
-        showTimes.add(showTime);
+    public Movie(String name, String link, int duration, int yearOfPublish, String[] genres) {
+        this.name = name;
+        this.link = link;
+        this.duration = duration;
+        this.yearOfPublish = yearOfPublish;
+        this.genres = genres;
     }
 }

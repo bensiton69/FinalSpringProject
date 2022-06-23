@@ -4,32 +4,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Data
 @Entity
 @NoArgsConstructor
+@Table(name = "SeatPackage")
 public class SeatPackage{
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private int rowNUmber;
+    private int colNumber;
     private boolean isAvailable;
-    private int row;
-    private int col;
 
-    @ManyToOne
-    ShowTime showTime;
-
-    public SeatPackage(int row, int col,boolean isAvailable, ShowTime showTime) {
+    public SeatPackage( int row, int col, boolean isAvailable) {
+        this.rowNUmber = row;
+        this.colNumber = col;
         this.isAvailable = isAvailable;
-        this.row = row;
-        this.col = col;
-        this.showTime = showTime;
-    }
-    @Override
-    public String toString() {
-        return super.toString() +
-                "SeatPackage{" +
-                "isAvailable=" + isAvailable +
-                '}';
     }
 }
