@@ -8,14 +8,12 @@ import org.springframework.context.annotation.Configuration;
 //import restapi.webapp.Models.CostumerUser;
 //import restapi.webapp.Models.Movie;
 //import restapi.webapp.Models.SeatPackage;
-import restapi.webapp.Models.Movie;
-import restapi.webapp.Models.SeatPackage;
-import restapi.webapp.Models.ShowTime;
-import restapi.webapp.Repositories.MovieRepos;
+import restapi.webapp.Models.*;
+import restapi.webapp.Repositories.*;
+import restapi.webapp.Services.ReservationService;
 //import restapi.webapp.Repositories.SeatPackageRepos;
 //import restapi.webapp.Repositories.UserRepos;
 //import restapi.webapp.Services.InitShowTimeService;
-import restapi.webapp.Repositories.ShowTimeRepos;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,29 +30,33 @@ class SeedDB {
     // CommandLineRunner beans once the application context is loaded.
     CommandLineRunner initDatabase(
             AsyncRunner asyncRunner ,
-            /*UserRepos userRepos,*/
+            UserRepos userRepos,
             MovieRepos movieRepos,
-            /*InitShowTimeService initShowTimeService*/
-            ShowTimeRepos showTimeRepos
-            /*SeatPackageRepos seatPackageRepos*/) {
+            ReservationRepos reservationRepos,
+            ShowTimeRepos showTimeRepos,
+            SeatPackageRepos seatPackageRepos,
+            ReservationService reservationService) {
         // runner gets a copy of the new DB and creates the following
         // products and saves them
         return args -> {
-//            seedUsers(userRepos);
-            seedShowTimes(movieRepos, showTimeRepos/*, seatPackageRepos*/);
+            seedUsers(userRepos);
+            seedShowTimes(movieRepos);
+            seedReservations(showTimeRepos, userRepos,reservationRepos);
+            SeedReservationsViaService(reservationService, userRepos, seatPackageRepos,showTimeRepos,reservationRepos);
         };
     }
 
-/*    private void seedUsers(UserRepos userRepos) {
+    private void seedUsers(UserRepos userRepos) {
         CostumerUser user1 = new CostumerUser("bensiton69");
         CostumerUser user2 = new CostumerUser("ShacharGlik94");
 
         logger.info("logging " + userRepos.save(user1));
         logger.info("logging " + userRepos.save(user2));
 
-    }*/
 
-    private void seedShowTimes(MovieRepos movieRepos, ShowTimeRepos showTimeRepos/*, SeatPackageRepos seatPackageRepos*/) {
+    }
+
+    private void seedShowTimes(MovieRepos movieRepos) {
 
         Movie hp1 = movieRepos.findById(new Long(1)).get();
 
@@ -70,22 +72,63 @@ class SeedDB {
         hp1.setShowTimes(Arrays.asList(showTime));
         movieRepos.save(hp1);
 
-
-//
 //        // TODO: move to a service that deals with initialize show time / ctor
-//        List<SeatPackage> seatPackages = new ArrayList<>();
-//        showTime.setSeatPackages(seatPackages);
-//
-//        for (int i=0;i<2;i++)
-//            for (int j=0;j<2;j++)
-//            {
-////                seatPackageRepos.save(new SeatPackage(i,j,true, showTime1));
-//              showTime.AddSeatPackage(new SeatPackage(i,j,true, showTime));
-//            }
-//
-////        logger.info("seats: " + showTime1.getSeatPackages());
-////
-//        showTimeRepos.save(showTime);
-////        logger.info("showtime1: " + showTime1);
+
+    }
+
+    private void seedReservations(
+            ShowTimeRepos showTimeRepos,
+            UserRepos userRepos,
+            ReservationRepos reservationRepos) {
+
+        ShowTime showTime = ((List<ShowTime>) showTimeRepos.findAll()).get(0);
+        CostumerUser costumerUser = ((List<CostumerUser>) userRepos.findAll()).get(0);
+
+        // TODO: change start time to showtime.startTime
+
+        List<SeatPackage> seatPackages = new ArrayList<>();
+
+
+
+        SeatPackage seatPackage1 = showTime.getSeatPackages().get(6);
+        SeatPackage seatPackage2 = showTime.getSeatPackages().get(7);
+
+        logger.info("sp1: " + seatPackage1);
+        logger.info("sp2: " + seatPackage2);
+
+        seatPackages.add(seatPackage1);
+        seatPackages.add(seatPackage2);
+
+
+
+        Reservation reservation =  new Reservation(seatPackages, LocalDateTime.now().plusMinutes(300), costumerUser);
+
+        seatPackage1.setReservation(reservation);
+        seatPackage2.setReservation(reservation);
+
+
+        reservationRepos.save(reservation);
+
+        costumerUser.addReservation(reservation);
+
+        userRepos.save(costumerUser);
+    }
+
+
+    private void SeedReservationsViaService(ReservationService reservationService,
+                                            UserRepos userRepos,
+                                            SeatPackageRepos seatPackageRepos,
+                                            ShowTimeRepos showTimeRepos,
+                                            ReservationRepos reservationRepos) {
+        List<SeatPackage> seatPackages = new ArrayList<>();
+        CostumerUser costumerUser = ((List<CostumerUser>) userRepos.findAll()).get(1);
+
+        ShowTime showTime = ((List<ShowTime>)showTimeRepos.findAll()).get(0);
+
+        seatPackages.add ((showTime.getSeatPackages().get(0)));
+        seatPackages.add ((showTime.getSeatPackages().get(1)));
+
+        reservationService.SafeReservation(seatPackages ,showTime, costumerUser, userRepos);
+
     }
 }

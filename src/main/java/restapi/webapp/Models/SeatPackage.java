@@ -17,6 +17,10 @@ public class SeatPackage{
     private int colNumber;
     private boolean isAvailable;
 
+    @ManyToOne
+    @JoinColumn(name = "reservation_id")
+    private Reservation reservation;
+
     public SeatPackage( int row, int col, boolean isAvailable) {
         this.rowNUmber = row;
         this.colNumber = col;

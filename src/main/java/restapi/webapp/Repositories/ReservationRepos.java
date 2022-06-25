@@ -2,8 +2,8 @@ package restapi.webapp.Repositories;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import restapi.webapp.Models.ShowTime;
+import restapi.webapp.Models.Reservation;
 
 @Repository
-public interface ShowTimeRepos extends CrudRepository<ShowTime, Long> {
+public interface ReservationRepos extends CrudRepository<Reservation, Long> {
 }
