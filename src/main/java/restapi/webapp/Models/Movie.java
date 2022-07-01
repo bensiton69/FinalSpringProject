@@ -28,22 +28,11 @@ public class Movie {
     @OneToMany(
             mappedBy = "movie",
             cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
             orphanRemoval = true
     )
     private List<ShowTime> showTimes = new ArrayList<ShowTime>();
 
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", link='" + link + '\'' +
-                ", duration=" + duration +
-                ", yearOfPublish=" + yearOfPublish +
-                ", genres=" + Arrays.toString(genres) +
-                ", showTimes=" + showTimes +
-                '}';
-    }
 
     public Movie(String name, String link, int duration, int yearOfPublish, String[] genres) {
         this.name = name;
@@ -51,5 +40,9 @@ public class Movie {
         this.duration = duration;
         this.yearOfPublish = yearOfPublish;
         this.genres = genres;
+    }
+
+    public void addShowTime(ShowTime showTime){
+        showTimes.add(showTime);
     }
 }

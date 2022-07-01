@@ -35,15 +35,13 @@ public class Reservation {
     @JoinColumn(name = "costumerUser_id")
     private CostumerUser costumerUser;
 
-    public Reservation(List<SeatPackage> seatPackages, LocalDateTime startTime, CostumerUser costumerUser) {
+    public Reservation(List<SeatPackage> seatPackages, LocalDateTime startTime) {
         this.seatPackages = seatPackages;
         price = this.seatPackages.stream().count()* 3.4;
 
 
         // TODO : start time = showtime.startTime
         this.startTime = startTime;
-
-        this.costumerUser = costumerUser;
     }
 
     public Reservation(CostumerUser costumerUser, ShowTime showTime) {
@@ -54,15 +52,4 @@ public class Reservation {
         seatPackages.add(seatPackage);
     }
 
-    @Override
-    public String toString() {
-        return "Reservation{" +
-                "id=" + id +
-                ", price=" + price +
-                ", orderTime=" + orderTime +
-                ", startTime=" + startTime +
-                ", seatPackages=" + seatPackages +
-                ", costumerUser=" + costumerUser +
-                '}';
-    }
 }

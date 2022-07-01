@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 //import restapi.webapp.Models.SeatPackage;
 import restapi.webapp.Models.*;
 import restapi.webapp.Repositories.*;
+import restapi.webapp.Services.InitShowTimeService;
 import restapi.webapp.Services.ReservationService;
 //import restapi.webapp.Repositories.SeatPackageRepos;
 //import restapi.webapp.Repositories.UserRepos;
@@ -35,12 +36,13 @@ class SeedDB {
             ReservationRepos reservationRepos,
             ShowTimeRepos showTimeRepos,
             SeatPackageRepos seatPackageRepos,
-            ReservationService reservationService) {
+            ReservationService reservationService,
+            InitShowTimeService initShowTimeService) {
         // runner gets a copy of the new DB and creates the following
         // products and saves them
         return args -> {
             seedUsers(userRepos);
-            seedShowTimes(movieRepos);
+            seedShowTimes(movieRepos, initShowTimeService);
             seedReservations(showTimeRepos, userRepos,reservationRepos);
             SeedReservationsViaService(reservationService, userRepos, seatPackageRepos,showTimeRepos,reservationRepos);
         };
@@ -56,24 +58,18 @@ class SeedDB {
 
     }
 
-    private void seedShowTimes(MovieRepos movieRepos) {
+    private void seedShowTimes(MovieRepos movieRepos, InitShowTimeService initShowTimeService) {
 
         Movie hp1 = movieRepos.findById(new Long(1)).get();
 
-        ShowTime showTime = new ShowTime(LocalDateTime.now().plusHours(2),hp1);
+        ShowTime showTime =
+                initShowTimeService.InitShowTime(hp1, 10, 10, LocalDateTime.now().plusHours(2));
+        ShowTime showTime2 =
+                initShowTimeService.InitShowTime(hp1, 10, 10, LocalDateTime.now().plusHours(4));
 
-        List<SeatPackage> seatPackages = new ArrayList<>();
-
-        for (int i=0;i<10;i++)
-            for (int j=0;j<10;j++)
-                seatPackages.add(new SeatPackage(i,j, true));
-
-        showTime.setSeatPackages(seatPackages);
-        hp1.setShowTimes(Arrays.asList(showTime));
         movieRepos.save(hp1);
 
-//        // TODO: move to a service that deals with initialize show time / ctor
-
+        // TODO: move to a service that deals with initialize show time / ctor
     }
 
     private void seedReservations(
@@ -101,7 +97,8 @@ class SeedDB {
 
 
 
-        Reservation reservation =  new Reservation(seatPackages, LocalDateTime.now().plusMinutes(300), costumerUser);
+        Reservation reservation =  new Reservation(seatPackages, LocalDateTime.now().plusMinutes(300));
+        reservation.setCostumerUser(costumerUser);
 
         seatPackage1.setReservation(reservation);
         seatPackage2.setReservation(reservation);

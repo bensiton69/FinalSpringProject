@@ -51,7 +51,6 @@ public class ReservationService {
         finally {
             reentrantLock.unlock();
         }
-//        return costumerUser.getReservations().get(0);
         return true;
     }
 }

@@ -2,6 +2,7 @@ package restapi.webapp.Dtos.Get;
 
 import lombok.Data;
 import restapi.webapp.Dtos.KeyValuePair;
+import restapi.webapp.Dtos.SeatPackageDto;
 import restapi.webapp.Models.ShowTime;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,6 @@ public class ReservationGetDto {
     private Double price;
     private LocalDateTime orderTime;
     private LocalDateTime startTime;
-    private List<KeyValuePair> seatPackages = new ArrayList<>();
-    private KeyValuePair ShowTime;
+    private List<SeatPackageDto> seatPackages = new ArrayList<>();
+    private KeyValuePair costumerUser;
 }
