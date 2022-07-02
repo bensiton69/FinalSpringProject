@@ -6,8 +6,8 @@ import restapi.webapp.Models.ShowTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieDto implements IHasId {
-
+public class MovieGetDto implements IHasId {
+// TODO: transfer to @DATA?
     private Long id;
     private String name;
     private String link;
@@ -18,7 +18,7 @@ public class MovieDto implements IHasId {
     private String[] genres;
     private List<KeyValuePair> showTimes = new ArrayList<KeyValuePair>();
 
-    public MovieDto() {
+    public MovieGetDto() {
     }
 
     public Long getId() {

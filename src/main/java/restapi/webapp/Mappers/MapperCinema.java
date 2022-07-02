@@ -2,43 +2,45 @@ package restapi.webapp.Mappers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import restapi.webapp.Dtos.Get.CostumerUserGetDto;
 import restapi.webapp.Dtos.Get.ReservationGetDto;
 import restapi.webapp.Dtos.KeyValuePair;
-import restapi.webapp.Dtos.MovieDto;
+import restapi.webapp.Dtos.MovieGetDto;
 import restapi.webapp.Dtos.SeatPackageDto;
 import restapi.webapp.Dtos.ShowTimeDto;
 import restapi.webapp.Models.*;
-import restapi.webapp.controllers.TestingController;
 
 import java.util.stream.Collectors;
 
 //TODO: implements IMapperCinema
-public class MapperCinema {
+@Component
+public class MapperCinema implements IMapperCinema {
     private static final Logger logger = LoggerFactory.getLogger(MapperCinema.class);
 
 
     // from DAO to DTO
-    public static MovieDto MapFromMovieToMovieGetDto(Movie movie) {
-        MovieDto movieDto = new MovieDto();
-        movieDto.setId(movie.getId());
-        movieDto.setName(movie.getName());
-        movieDto.setLink(movie.getLink());
-        movieDto.setDuration(movie.getDuration());
-        movieDto.setYearOfPublish(movie.getYearOfPublish());
-        movieDto.setGenres(movie.getGenres());
+    public MovieGetDto MapFromMovieToMovieGetDto(Movie movie) {
+        MovieGetDto movieGetDto = new MovieGetDto();
+        movieGetDto.setId(movie.getId());
+        movieGetDto.setName(movie.getName());
+        movieGetDto.setLink(movie.getLink());
+        movieGetDto.setDuration(movie.getDuration());
+        movieGetDto.setYearOfPublish(movie.getYearOfPublish());
+        movieGetDto.setGenres(movie.getGenres());
 
         //TODO: work with map and stream instead
         for (ShowTime showTimeLeg : movie.getShowTimes()) {
-            movieDto.AddShowTimesAsKVP(MapFromShowTimeToKVP(showTimeLeg));
+            movieGetDto.AddShowTimesAsKVP(MapFromShowTimeToKVP(showTimeLeg));
         }
 
-        return movieDto;
+        return movieGetDto;
     }
-    public static KeyValuePair MapFromShowTimeToKVP(ShowTime showTime) {
+    public KeyValuePair MapFromShowTimeToKVP(ShowTime showTime) {
         return new KeyValuePair(showTime.getId(), showTime.getStartTime().toString());
     }
 
-    public static ShowTimeDto MapFromShowTimeToShowTimeDto(ShowTime showTime){
+    public ShowTimeDto MapFromShowTimeToShowTimeDto(ShowTime showTime){
         ShowTimeDto showTimeDto = new ShowTimeDto();
         showTimeDto.setStartTime(showTime.getStartTime());
         showTimeDto.setId(showTime.getId());
@@ -46,17 +48,17 @@ public class MapperCinema {
         showTimeDto.setSeatPackage(
                 showTime.getSeatPackages()
                         .stream()
-                        .map(MapperCinema::MapFromSeatPackageToSeatPackageDto)
+                        .map(this::MapFromSeatPackageToSeatPackageDto)
                         .collect(Collectors.toList()));
 
         return showTimeDto;
     }
 
-    private static KeyValuePair MapFromMovieToKVP(Movie movie) {
+    public KeyValuePair MapFromMovieToKVP(Movie movie) {
         return new KeyValuePair(movie.getId(), movie.getName());
     }
 
-    public static SeatPackageDto MapFromSeatPackageToSeatPackageDto(SeatPackage seatPackage)
+    public SeatPackageDto MapFromSeatPackageToSeatPackageDto(SeatPackage seatPackage)
     {
         SeatPackageDto seatPackageDto = new SeatPackageDto();
         seatPackageDto.setAvailable(seatPackage.isAvailable());
@@ -68,7 +70,7 @@ public class MapperCinema {
     }
 
 
-    public static ReservationGetDto MapFromReservationToReservationGetDto(Reservation reservation){
+    public ReservationGetDto MapFromReservationToReservationGetDto(Reservation reservation){
         ReservationGetDto reservationGetDto = new ReservationGetDto();
         reservationGetDto.setId(reservation.getId());
         reservationGetDto.setPrice(reservation.getPrice());
@@ -78,14 +80,26 @@ public class MapperCinema {
         reservationGetDto.setSeatPackages(reservation
                 .getSeatPackages()
                 .stream()
-                .map(MapperCinema::MapFromSeatPackageToSeatPackageDto)
+                .map(this::MapFromSeatPackageToSeatPackageDto)
                 .collect(Collectors.toList()));
 
         return reservationGetDto;
     }
 
-    public static KeyValuePair MapFromUserToKVP(CostumerUser costumerUser){
+    public KeyValuePair MapFromUserToKVP(CostumerUser costumerUser){
         return new KeyValuePair(costumerUser.getId(), costumerUser.getUsername());
+    }
+
+    public CostumerUserGetDto MapFromCostumerUserToCostumerUserGetDto(CostumerUser costumerUser) {
+        CostumerUserGetDto costumerUserGetDto = new CostumerUserGetDto();
+        costumerUserGetDto.setUsername(costumerUser.getUsername());
+        costumerUserGetDto.setId(costumerUser.getId());
+        costumerUserGetDto.setReservations(costumerUser.getReservations()
+                .stream()
+                .map(this::MapFromReservationToReservationGetDto)
+                .collect(Collectors.toList()));
+
+        return costumerUserGetDto;
     }
 
     //from DTO to DAO

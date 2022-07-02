@@ -28,11 +28,4 @@ public class TestingController {
         this.reservationRepos = reservationRepos;
     }
 
-    @GetMapping("Test")
-    public ReservationGetDto getTest()
-    {
-        return MapperCinema.MapFromReservationToReservationGetDto(
-                ((List<Reservation>) reservationRepos.findAll()).get(0)
-        );
-    }
 }
