@@ -1,6 +1,7 @@
 package restapi.webapp.Dtos.Get;
 
 import lombok.Data;
+import restapi.webapp.Builders.IHasId;
 import restapi.webapp.Dtos.KeyValuePair;
 import restapi.webapp.Dtos.SeatPackageDto;
 import restapi.webapp.Models.ShowTime;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class ReservationGetDto {
+public class ReservationGetDto implements IHasId {
     private Long id;
     private Double price;
     private LocalDateTime orderTime;
