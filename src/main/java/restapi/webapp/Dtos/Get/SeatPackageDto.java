@@ -1,4 +1,4 @@
-package restapi.webapp.Dtos;
+package restapi.webapp.Dtos.Get;
 
 import net.minidev.json.annotate.JsonIgnore;
 

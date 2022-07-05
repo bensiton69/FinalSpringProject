@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import restapi.webapp.Builders.BuilderEntityFactory;
 import restapi.webapp.Builders.IControllerInterface;
-import restapi.webapp.Dtos.ShowTimeDto;
+import restapi.webapp.Dtos.Get.ShowTimeDto;
 import restapi.webapp.Mappers.IMapperCinema;
-import restapi.webapp.Mappers.MapperCinema;
 import restapi.webapp.Repositories.ShowTimeRepos;
 
 import java.util.stream.Collectors;

@@ -1,6 +1,7 @@
-package restapi.webapp.Dtos;
+package restapi.webapp.Dtos.Get;
 
 import restapi.webapp.Builders.IHasId;
+import restapi.webapp.Dtos.KeyValuePair;
 import restapi.webapp.Models.ShowTime;
 
 import java.util.ArrayList;

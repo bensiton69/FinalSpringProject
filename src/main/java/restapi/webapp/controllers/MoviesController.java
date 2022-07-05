@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import restapi.webapp.Builders.BuilderEntityFactory;
 import restapi.webapp.Builders.IControllerInterface;
-import restapi.webapp.Dtos.MovieGetDto;
+import restapi.webapp.Dtos.Get.MovieGetDto;
 import restapi.webapp.Mappers.IMapperCinema;
-import restapi.webapp.Mappers.MapperCinema;
 import restapi.webapp.Repositories.MovieRepos;
 import restapi.webapp.Services.MovieService;
 

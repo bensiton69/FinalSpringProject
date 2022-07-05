@@ -3,8 +3,6 @@ package restapi.webapp.Dtos.Get;
 import lombok.Data;
 import restapi.webapp.Builders.IHasId;
 import restapi.webapp.Dtos.KeyValuePair;
-import restapi.webapp.Dtos.SeatPackageDto;
-import restapi.webapp.Models.ShowTime;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

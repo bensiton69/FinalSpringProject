@@ -38,23 +38,9 @@ public class CostumerUser {
         reservations.add(reservation);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public void removeReservation(Reservation reservation) {
+        reservations.remove(reservation);
+    }
 
 
 //    public CostumerUser(String username) {

@@ -45,7 +45,24 @@ class SeedDB {
             seedShowTimes(movieRepos, initShowTimeService);
             seedReservations(showTimeRepos, userRepos,reservationRepos);
             SeedReservationsViaService(reservationService, userRepos, seatPackageRepos,showTimeRepos,reservationRepos);
+            //seedRemoveReservation(reservationRepos, seatPackageRepos, userRepos);
         };
+    }
+
+    private void seedRemoveReservation(ReservationRepos reservationRepos, SeatPackageRepos seatPackageRepos, UserRepos userRepos) {
+        Reservation reservation = reservationRepos.findById(206L).get();
+        List<SeatPackage> seatPackages = reservation.getSeatPackages();
+
+        for (SeatPackage seatPackage : seatPackages){
+            seatPackage.setReservation(null);
+        }
+
+        seatPackageRepos.saveAll(seatPackages);
+        CostumerUser costumerUser = userRepos.findById(reservation.getCostumerUser().getId()).get();
+        costumerUser.setReservations(null);
+
+        userRepos.save(costumerUser);
+        reservationRepos.deleteById(reservation.getId());
     }
 
     private void seedUsers(UserRepos userRepos) {
@@ -125,7 +142,7 @@ class SeedDB {
         seatPackages.add ((showTime.getSeatPackages().get(0)));
         seatPackages.add ((showTime.getSeatPackages().get(1)));
 
-        reservationService.SafeReservation(seatPackages ,showTime, costumerUser, userRepos);
+        reservationService.SafeReservation(seatPackages ,costumerUser, userRepos, reservationRepos);
 
     }
 }

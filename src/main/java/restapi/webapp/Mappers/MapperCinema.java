@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 import restapi.webapp.Dtos.Get.CostumerUserGetDto;
 import restapi.webapp.Dtos.Get.ReservationGetDto;
 import restapi.webapp.Dtos.KeyValuePair;
-import restapi.webapp.Dtos.MovieGetDto;
-import restapi.webapp.Dtos.SeatPackageDto;
-import restapi.webapp.Dtos.ShowTimeDto;
+import restapi.webapp.Dtos.Get.MovieGetDto;
+import restapi.webapp.Dtos.Get.SeatPackageDto;
+import restapi.webapp.Dtos.Get.ShowTimeDto;
 import restapi.webapp.Models.*;
 
 import java.util.stream.Collectors;

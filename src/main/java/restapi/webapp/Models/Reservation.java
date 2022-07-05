@@ -44,7 +44,7 @@ public class Reservation {
         this.startTime = startTime;
     }
 
-    public Reservation(CostumerUser costumerUser, ShowTime showTime) {
+    public Reservation(CostumerUser costumerUser) {
         this.costumerUser = costumerUser;
     }
 

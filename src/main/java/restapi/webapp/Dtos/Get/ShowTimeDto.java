@@ -1,6 +1,8 @@
-package restapi.webapp.Dtos;
+package restapi.webapp.Dtos.Get;
 
 import restapi.webapp.Builders.IHasId;
+import restapi.webapp.Dtos.Get.SeatPackageDto;
+import restapi.webapp.Dtos.KeyValuePair;
 
 import java.time.LocalDateTime;
 import java.util.List;

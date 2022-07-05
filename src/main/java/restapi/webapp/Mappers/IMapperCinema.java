@@ -1,13 +1,12 @@
 package restapi.webapp.Mappers;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import restapi.webapp.Dtos.Get.CostumerUserGetDto;
 import restapi.webapp.Dtos.Get.ReservationGetDto;
 import restapi.webapp.Dtos.KeyValuePair;
-import restapi.webapp.Dtos.MovieGetDto;
-import restapi.webapp.Dtos.SeatPackageDto;
-import restapi.webapp.Dtos.ShowTimeDto;
+import restapi.webapp.Dtos.Get.MovieGetDto;
+import restapi.webapp.Dtos.Get.SeatPackageDto;
+import restapi.webapp.Dtos.Get.ShowTimeDto;
 import restapi.webapp.Models.*;
 
 @Service
