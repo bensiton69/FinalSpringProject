@@ -38,8 +38,6 @@ public class Reservation {
     public Reservation(List<SeatPackage> seatPackages, LocalDateTime startTime) {
         this.seatPackages = seatPackages;
         price = this.seatPackages.stream().count()* 3.4;
-
-
         // TODO : start time = showtime.startTime
         this.startTime = startTime;
     }

@@ -9,6 +9,7 @@ import restapi.webapp.Dtos.KeyValuePair;
 import restapi.webapp.Dtos.Get.MovieGetDto;
 import restapi.webapp.Dtos.Get.SeatPackageDto;
 import restapi.webapp.Dtos.Get.ShowTimeDto;
+import restapi.webapp.Dtos.Set.CostumerUserSetDto;
 import restapi.webapp.Models.*;
 
 import java.util.stream.Collectors;
@@ -92,6 +93,7 @@ public class MapperCinema implements IMapperCinema {
 
     public CostumerUserGetDto MapFromCostumerUserToCostumerUserGetDto(CostumerUser costumerUser) {
         CostumerUserGetDto costumerUserGetDto = new CostumerUserGetDto();
+        costumerUserGetDto.setStatus(costumerUser.getStatus());
         costumerUserGetDto.setUsername(costumerUser.getUsername());
         costumerUserGetDto.setId(costumerUser.getId());
         costumerUserGetDto.setReservations(costumerUser.getReservations()
@@ -104,4 +106,14 @@ public class MapperCinema implements IMapperCinema {
 
     //from DTO to DAO
 
+    public CostumerUser MapFromCostumerUserSetDtoToCostumerUser(CostumerUserSetDto costumerUserSetDto)
+    {
+        return new CostumerUser(costumerUserSetDto.getUsername());
+    }
+
+    public CostumerUser MapFromCostumerUserGetDtoToCostumerUser(CostumerUserGetDto costumerUserGetDto) {
+        CostumerUser costumerUser = new CostumerUser(costumerUserGetDto.getUsername());
+        costumerUser.setId(costumerUser.getId());
+        return costumerUser;
+    }
 }

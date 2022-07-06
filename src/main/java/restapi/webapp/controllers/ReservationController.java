@@ -104,7 +104,7 @@ public class ReservationController implements IControllerInterface<ReservationGe
 //
 //    }
 
-    @PostMapping("/Reservations/new")
+    @PostMapping("/Reservations")
     public ResponseEntity<?> newProduct(@RequestBody ReservationSetDto reservationSetDto){
         CostumerUser costumerUser = (userRepos.findById(reservationSetDto.getCostumerUserId()).get());
         List<SeatPackage> seatPackageList = new ArrayList<>();
@@ -116,11 +116,11 @@ public class ReservationController implements IControllerInterface<ReservationGe
         try{
             Reservation reservation = optionalReservation.get();
             ReservationGetDto reservationGetDto = mapperCinema.MapFromReservationToReservationGetDto(reservation);
-            EntityModel<ReservationGetDto> entityProduct = reservationEntityFactory.toModel(reservationGetDto);
+            EntityModel<ReservationGetDto> entityReservation = reservationEntityFactory.toModel(reservationGetDto);
             return
                     // status code 201
-                    ResponseEntity.created(new URI(entityProduct.getRequiredLink(IanaLinkRelations.SELF)
-                            .getHref())).body(entityProduct);
+                    ResponseEntity.created(new URI(entityReservation.getRequiredLink(IanaLinkRelations.SELF)
+                            .getHref())).body(entityReservation);
         } catch (Exception e) {
             return
                     // status code: 400
@@ -140,7 +140,7 @@ public class ReservationController implements IControllerInterface<ReservationGe
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         else
         {
-            reservationService.RemoveReservation(id, reservationRepos, seatPackageRepos); // TODO: to service
+            reservationService.RemoveReservation(id, reservationRepos, seatPackageRepos);
             logger.info("Reservation" + id + "deleted");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

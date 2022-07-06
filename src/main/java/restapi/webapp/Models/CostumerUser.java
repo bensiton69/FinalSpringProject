@@ -12,9 +12,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "CostumerUser")
-public class CostumerUser {
-    //TODO: move Reservations to interface ICostumer
-
+public class CostumerUser implements ICostumer, IActivable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,7 +25,7 @@ public class CostumerUser {
             orphanRemoval = true
     )
     private List<Reservation> reservations= new ArrayList<>();
-
+    private Status status = Status.Active;
     public CostumerUser(String username) {
 
 //        this.reservations = new ArrayList<>();
@@ -41,18 +39,6 @@ public class CostumerUser {
     public void removeReservation(Reservation reservation) {
         reservations.remove(reservation);
     }
-
-
-//    public CostumerUser(String username) {
-//        super(username);}
-
-//    @Override
-//    public String toString() {
-//        return super.toString() +
-//                "CostumerUser{" +
-////                "Reservations=" + Reservations +
-//                '}';
-//    }
 }
 
 

@@ -68,16 +68,18 @@ class SeedDB {
     private void seedUsers(UserRepos userRepos) {
         CostumerUser user1 = new CostumerUser("bensiton69");
         CostumerUser user2 = new CostumerUser("ShacharGlik94");
+        CostumerUser user3 = new CostumerUser("DummyUser1");
 
         logger.info("logging " + userRepos.save(user1));
         logger.info("logging " + userRepos.save(user2));
+        logger.info("logging " + userRepos.save(user3));
 
 
     }
 
     private void seedShowTimes(MovieRepos movieRepos, InitShowTimeService initShowTimeService) {
 
-        Movie hp1 = movieRepos.findById(new Long(1)).get();
+        Movie hp1 = movieRepos.findById(1L).get();
 
         ShowTime showTime =
                 initShowTimeService.InitShowTime(hp1, 10, 10, LocalDateTime.now().plusHours(2));
