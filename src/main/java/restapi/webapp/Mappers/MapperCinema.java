@@ -62,6 +62,8 @@ public class MapperCinema implements IMapperCinema {
     public SeatPackageGetDto MapFromSeatPackageToSeatPackageGetDto(SeatPackage seatPackage)
     {
         SeatPackageGetDto seatPackageGetDto = new SeatPackageGetDto();
+        KeyValuePair showTimeAsKVP = new KeyValuePair(seatPackage.getShowTime().getId(), seatPackage.getShowTime().getMovie().getName());
+        seatPackageGetDto.setShowTime(showTimeAsKVP);
         seatPackageGetDto.setAvailable(seatPackage.isAvailable());
         seatPackageGetDto.setId(seatPackage.getId());
         seatPackageGetDto.setStatus(seatPackage.getStatus());

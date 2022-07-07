@@ -23,7 +23,7 @@ public class InitShowTimeService {
 
         for (int i=0;i<numOfRows;i++)
             for (int j=0;j<numOfCols;j++)
-                seatPackages.add(new SeatPackage(i,j, true));
+                seatPackages.add(new SeatPackage(i,j, true, showTime));
         showTime.setSeatPackages(seatPackages);
         movie.addShowTime(showTime);
         return showTime;

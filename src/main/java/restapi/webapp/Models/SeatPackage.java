@@ -22,9 +22,27 @@ public class SeatPackage implements IActivable{
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 
+    @ManyToOne
+    @JoinColumn(name = "showTime_id")
+    private ShowTime showTime;
+
     public SeatPackage( int row, int col, boolean isAvailable) {
         this.rowNUmber = row;
         this.colNumber = col;
         this.isAvailable = isAvailable;
+    }
+
+    public SeatPackage(int rowNUmber, int colNumber, boolean isAvailable, ShowTime showTime) {
+        this.rowNUmber = rowNUmber;
+        this.colNumber = colNumber;
+        this.isAvailable = isAvailable;
+        this.showTime = showTime;
+    }
+
+    @Override
+    public String toString() {
+        return "SeatPackage{" +
+                "id=" + id +
+                '}';
     }
 }

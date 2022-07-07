@@ -25,21 +25,12 @@ public class ShowTime {
     private Movie movie;
 
     @OneToMany(
+            mappedBy = "showTime",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.EAGER
     )
-    @JoinColumn(name = "Showtime_id")
     private List<SeatPackage> seatPackages = new ArrayList<>();
-
-
-//    @OneToMany(
-//            mappedBy = "ShowTime",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true
-//    )
-//    private List<Reservation> items = new ArrayList<>();
-
 
     public ShowTime(LocalDateTime startTime, Movie movie) {
         this.startTime = startTime;
