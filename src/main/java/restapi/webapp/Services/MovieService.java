@@ -29,14 +29,14 @@ public class MovieService {
     }
 
     @Async
-    public CompletableFuture<Movie> Movies(){
+    public CompletableFuture<Movie[]> Movies(){
         String urlTemplate = String.format("http://localhost:8081/Movies");
-        Movie aMovieLeg = this.template.getForObject(urlTemplate, Movie.class);
-        System.out.println(aMovieLeg);
+        Movie[] movies = this.template.getForObject(urlTemplate, Movie[].class);
+
         /*
          return a CompletableFuture<GitHubUser> when the computation is done
          this goes hand-with-hand with the join() method
          */
-        return CompletableFuture.completedFuture(aMovieLeg);
+        return CompletableFuture.completedFuture(movies);
     }
 }

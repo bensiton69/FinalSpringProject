@@ -27,19 +27,28 @@ public class AsyncRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        CompletableFuture<Movie> movie = movieService.singleMovie(1);
+        CompletableFuture<Movie> movieTask = movieService.singleMovie(1);
+        CompletableFuture<Movie[]> moviesTask = movieService.Movies();
 
-        CompletableFuture<Movie>[] taskArrayMovie = new CompletableFuture[1];
+        CompletableFuture<?>[] taskArrayMovie = new CompletableFuture[2];
 
-        taskArrayMovie[0] = movie;
+        taskArrayMovie[0] = movieTask;
+        taskArrayMovie[1] = moviesTask;
 
         CompletableFuture.allOf(taskArrayMovie).join();
 
 
-        Movie mov = movie.get();
-        classLogger.info("movie = " + mov);
+        Movie movie = movieTask.get();
+        Movie[] movies = moviesTask.get();
+        classLogger.info("movie = " + movie);
+        for (Movie m : movies)
+        {
+            classLogger.info("movies = " + m);
+            movieRepos.save(m);
+        }
 
-        movieRepos.save(mov);
+
+        movieRepos.save(movie);
     }
 
     public void Seed() throws Exception {

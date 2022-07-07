@@ -14,6 +14,7 @@ import restapi.webapp.Dtos.Get.CostumerUserGetDto;
 import restapi.webapp.Dtos.Set.CostumerUserSetDto;
 import restapi.webapp.Mappers.IMapperCinema;
 import restapi.webapp.Models.CostumerUser;
+import restapi.webapp.Models.Status;
 import restapi.webapp.Repositories.UserRepos;
 import restapi.webapp.Services.ActivationService;
 
@@ -55,6 +56,20 @@ public class UsersController implements IControllerInterface<CostumerUserGetDto>
         return ResponseEntity.ok(
                 userEntityFactory.toCollectionModel(
                         StreamSupport.stream(userRepos.findAll().spliterator(),
+                                        false)
+                                .map(mapperCinema::MapFromCostumerUserToCostumerUserGetDto) //
+                                .collect(Collectors.toList())));
+    }
+
+    @GetMapping("/Users/Active")
+    public ResponseEntity<CollectionModel<EntityModel<CostumerUserGetDto>>> getActiveUsers() {
+        return ResponseEntity.ok(
+                userEntityFactory.toCollectionModel(
+                        StreamSupport.stream(((List<CostumerUser>)userRepos.findAll())
+                                                .stream()
+                                                .filter(u-> u.getStatus() == Status.Active)
+                                                .collect(Collectors.toList())
+                                                .spliterator(),
                                         false)
                                 .map(mapperCinema::MapFromCostumerUserToCostumerUserGetDto) //
                                 .collect(Collectors.toList())));
@@ -120,8 +135,9 @@ public class UsersController implements IControllerInterface<CostumerUserGetDto>
         }
     }
 
+    // TODO: allow this?
     @DeleteMapping("Users/{id}")
-    public ResponseEntity<?> putUser(@PathVariable Long id){
+    public ResponseEntity<?> deleteUser(@PathVariable Long id){
         if(userRepos.findById(id).isPresent() == false)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         else

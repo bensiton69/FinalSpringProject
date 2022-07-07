@@ -37,11 +37,9 @@ public class Reservation implements IActivable {
     @JoinColumn(name = "costumerUser_id")
     private CostumerUser costumerUser;
 
-    public Reservation(List<SeatPackage> seatPackages, LocalDateTime startTime) {
+    public Reservation(List<SeatPackage> seatPackages) {
         this.seatPackages = seatPackages;
         price = this.seatPackages.stream().count()* 3.4;
-        // TODO : start time = showtime.startTime
-        this.startTime = startTime;
     }
 
     public Reservation(CostumerUser costumerUser) {
@@ -51,5 +49,6 @@ public class Reservation implements IActivable {
     public void addSeatPackage(SeatPackage seatPackage){
         seatPackages.add(seatPackage);
     }
+
 
 }

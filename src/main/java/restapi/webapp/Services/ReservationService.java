@@ -10,6 +10,7 @@ import restapi.webapp.Models.SeatPackage;
 import restapi.webapp.Models.Status;
 import restapi.webapp.Repositories.ReservationRepos;
 import restapi.webapp.Repositories.SeatPackageRepos;
+import restapi.webapp.Repositories.ShowTimeRepos;
 import restapi.webapp.Repositories.UserRepos;
 
 import java.util.List;
@@ -22,9 +23,11 @@ public class ReservationService {
     ReentrantLock reentrantLock = new ReentrantLock();
     private static final Logger logger = LoggerFactory.getLogger(ReservationService.class);
     private final ActivationService activationService;
+    private final ShowTimeRepos showTimeRepos;
 
-    public ReservationService(ActivationService activationService) {
+    public ReservationService(ActivationService activationService, ShowTimeRepos showTimeRepos) {
         this.activationService = activationService;
+        this.showTimeRepos = showTimeRepos;
     }
 
 
@@ -51,6 +54,7 @@ public class ReservationService {
                     }
                 }
             reservation.setPrice(pricePerSeat * seatPackages.size());
+            reservation.setStartTime(seatPackages.get(0).getShowTime().getStartTime());
             reservationRepos.save(reservation);
 
             optionalReservation = Optional.of(reservation);
@@ -81,7 +85,8 @@ public class ReservationService {
             logger.info("saving: " + seatPackageRepos.save(new SeatPackage(
                     seatPackage.getRowNUmber(),
                     seatPackage.getColNumber(),
-                    true
+                    true,
+                    seatPackage.getShowTime()
             )));
             seatPackage.setStatus(Status.Inactive);
         }

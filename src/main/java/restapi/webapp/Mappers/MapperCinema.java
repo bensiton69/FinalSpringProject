@@ -79,7 +79,7 @@ public class MapperCinema implements IMapperCinema {
         reservationGetDto.setId(reservation.getId());
         reservationGetDto.setStatus(reservation.getStatus());
         reservationGetDto.setPrice(reservation.getPrice());
-        reservationGetDto.setStartTime(reservationGetDto.getStartTime());
+        reservationGetDto.setStartTime(reservation.getStartTime());
         reservationGetDto.setOrderTime(reservation.getOrderTime());
         reservationGetDto.setCostumerUser(MapFromUserToKVP(reservation.getCostumerUser()));
         reservationGetDto.setSeatPackages(reservation

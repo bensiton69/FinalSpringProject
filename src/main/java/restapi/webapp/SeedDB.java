@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 //import restapi.webapp.Models.CostumerUser;
 //import restapi.webapp.Models.Movie;
 //import restapi.webapp.Models.SeatPackage;
+import restapi.webapp.Dtos.Set.ReservationSetDto;
 import restapi.webapp.Models.*;
 import restapi.webapp.Repositories.*;
 import restapi.webapp.Services.InitShowTimeService;
@@ -99,13 +100,13 @@ class SeedDB {
 
 
 
-        Reservation reservation =  new Reservation(seatPackages, LocalDateTime.now().plusMinutes(300));
+        Reservation reservation =  new Reservation(seatPackages);
         reservation.setCostumerUser(costumerUser);
 
         seatPackage1.setReservation(reservation);
         seatPackage2.setReservation(reservation);
 
-
+        reservation.setStartTime(seatPackage1.getReservation().getStartTime());
         reservationRepos.save(reservation);
 
         costumerUser.addReservation(reservation);
@@ -119,15 +120,24 @@ class SeedDB {
                                             SeatPackageRepos seatPackageRepos,
                                             ShowTimeRepos showTimeRepos,
                                             ReservationRepos reservationRepos) {
-        List<SeatPackage> seatPackages = new ArrayList<>();
+
+        ReservationSetDto reservationSetDto = new ReservationSetDto();
+        reservationSetDto.setCostumerUserId(2L);
+        List<Long> idsList = new ArrayList<>();
+        idsList.add(30L);
+        idsList.add(31L);
+
+        reservationSetDto.setSeatPackagesId(idsList);
+
+        List<SeatPackage> seatPackageList = new ArrayList<>();
+        for (Long id : reservationSetDto.getSeatPackagesId())
+        {
+            seatPackageList.add(seatPackageRepos.findById(id).get());
+        }
+
         CostumerUser costumerUser = ((List<CostumerUser>) userRepos.findAll()).get(1);
 
-        ShowTime showTime = ((List<ShowTime>)showTimeRepos.findAll()).get(0);
-
-        seatPackages.add ((showTime.getSeatPackages().get(16)));
-        seatPackages.add ((showTime.getSeatPackages().get(17)));
-
-        reservationService.SafeReservation(seatPackages ,costumerUser, userRepos, reservationRepos);
+        reservationService.SafeReservation(seatPackageList ,costumerUser, userRepos, reservationRepos);
 
     }
 }

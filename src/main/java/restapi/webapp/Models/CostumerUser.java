@@ -17,6 +17,8 @@ public class CostumerUser implements ICostumer, IActivable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(unique=true)
     private String username;
     @OneToMany(
             fetch = FetchType.EAGER,
