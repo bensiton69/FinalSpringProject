@@ -12,13 +12,15 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "Reservation")
-public class Reservation {
+public class Reservation implements IActivable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Double price;
     private LocalDateTime orderTime = LocalDateTime.now();
     private LocalDateTime startTime;
+    private Status status = Status.Active;
+
 
 //    @ManyToOne
 //    @JoinColumn(name = "showTime_id")

@@ -9,13 +9,14 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @Table(name = "SeatPackage")
-public class SeatPackage{
+public class SeatPackage implements IActivable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private int rowNUmber;
     private int colNumber;
     private boolean isAvailable;
+    private Status status = Status.Active;
 
     @ManyToOne
     @JoinColumn(name = "reservation_id")

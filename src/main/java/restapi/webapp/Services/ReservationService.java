@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import restapi.webapp.Models.CostumerUser;
 import restapi.webapp.Models.Reservation;
 import restapi.webapp.Models.SeatPackage;
-import restapi.webapp.Models.ShowTime;
+import restapi.webapp.Models.Status;
 import restapi.webapp.Repositories.ReservationRepos;
 import restapi.webapp.Repositories.SeatPackageRepos;
 import restapi.webapp.Repositories.UserRepos;
@@ -21,6 +21,11 @@ public class ReservationService {
     private Double pricePerSeat = 2.6;
     ReentrantLock reentrantLock = new ReentrantLock();
     private static final Logger logger = LoggerFactory.getLogger(ReservationService.class);
+    private final ActivationService activationService;
+
+    public ReservationService(ActivationService activationService) {
+        this.activationService = activationService;
+    }
 
 
     public Optional<Reservation> SafeReservation(List<SeatPackage> seatPackages,
@@ -59,17 +64,29 @@ public class ReservationService {
         }
     }
 
+    /***
+     * Makes some reservation and all its seat packages inactive,
+     * Also creates new SeatPackages with same props into the DB
+     * @param id - Reservation ID
+     * @param reservationRepos - Reservation repository
+     * @param seatPackageRepos - SeatPackage repository
+     */
     public void RemoveReservation(Long id, ReservationRepos reservationRepos, SeatPackageRepos seatPackageRepos) {
         Reservation reservation = reservationRepos.findById(id).get();
         List<SeatPackage> seatPackages = reservation.getSeatPackages();
-        //reservation.setSeatPackages(null);
-
+        activationService.Deactivate(reservation, reservationRepos);
+        // TODO: add showtime details
         for (SeatPackage seatPackage : seatPackages)
         {
-            seatPackage.setReservation(null);
-            seatPackage.setAvailable(true);
+            logger.info("saving: " + seatPackageRepos.save(new SeatPackage(
+                    seatPackage.getRowNUmber(),
+                    seatPackage.getColNumber(),
+                    true
+            )));
+            seatPackage.setStatus(Status.Inactive);
         }
-        reservationRepos.deleteById(id);
-        seatPackageRepos.saveAll(seatPackages);
+        reservationRepos.save(reservation);
+
+//        seatPackageRepos.saveAll(seatPackages);
     }
 }

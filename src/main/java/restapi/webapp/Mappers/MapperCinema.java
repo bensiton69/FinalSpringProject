@@ -7,7 +7,7 @@ import restapi.webapp.Dtos.Get.CostumerUserGetDto;
 import restapi.webapp.Dtos.Get.ReservationGetDto;
 import restapi.webapp.Dtos.KeyValuePair;
 import restapi.webapp.Dtos.Get.MovieGetDto;
-import restapi.webapp.Dtos.Get.SeatPackageDto;
+import restapi.webapp.Dtos.Get.SeatPackageGetDto;
 import restapi.webapp.Dtos.Get.ShowTimeDto;
 import restapi.webapp.Dtos.Set.CostumerUserSetDto;
 import restapi.webapp.Models.*;
@@ -49,7 +49,7 @@ public class MapperCinema implements IMapperCinema {
         showTimeDto.setSeatPackage(
                 showTime.getSeatPackages()
                         .stream()
-                        .map(this::MapFromSeatPackageToSeatPackageDto)
+                        .map(this::MapFromSeatPackageToSeatPackageGetDto)
                         .collect(Collectors.toList()));
 
         return showTimeDto;
@@ -59,21 +59,23 @@ public class MapperCinema implements IMapperCinema {
         return new KeyValuePair(movie.getId(), movie.getName());
     }
 
-    public SeatPackageDto MapFromSeatPackageToSeatPackageDto(SeatPackage seatPackage)
+    public SeatPackageGetDto MapFromSeatPackageToSeatPackageGetDto(SeatPackage seatPackage)
     {
-        SeatPackageDto seatPackageDto = new SeatPackageDto();
-        seatPackageDto.setAvailable(seatPackage.isAvailable());
-        seatPackageDto.setId(seatPackage.getId());
-        seatPackageDto.setCol(seatPackage.getColNumber());
-        seatPackageDto.setRow(seatPackage.getRowNUmber());
+        SeatPackageGetDto seatPackageGetDto = new SeatPackageGetDto();
+        seatPackageGetDto.setAvailable(seatPackage.isAvailable());
+        seatPackageGetDto.setId(seatPackage.getId());
+        seatPackageGetDto.setStatus(seatPackage.getStatus());
+        seatPackageGetDto.setCol(seatPackage.getColNumber());
+        seatPackageGetDto.setRow(seatPackage.getRowNUmber());
 
-        return seatPackageDto;
+        return seatPackageGetDto;
     }
 
 
     public ReservationGetDto MapFromReservationToReservationGetDto(Reservation reservation){
         ReservationGetDto reservationGetDto = new ReservationGetDto();
         reservationGetDto.setId(reservation.getId());
+        reservationGetDto.setStatus(reservation.getStatus());
         reservationGetDto.setPrice(reservation.getPrice());
         reservationGetDto.setStartTime(reservationGetDto.getStartTime());
         reservationGetDto.setOrderTime(reservation.getOrderTime());
@@ -81,7 +83,7 @@ public class MapperCinema implements IMapperCinema {
         reservationGetDto.setSeatPackages(reservation
                 .getSeatPackages()
                 .stream()
-                .map(this::MapFromSeatPackageToSeatPackageDto)
+                .map(this::MapFromSeatPackageToSeatPackageGetDto)
                 .collect(Collectors.toList()));
 
         return reservationGetDto;

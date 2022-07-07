@@ -141,7 +141,7 @@ public class ReservationController implements IControllerInterface<ReservationGe
         else
         {
             reservationService.RemoveReservation(id, reservationRepos, seatPackageRepos);
-            logger.info("Reservation" + id + "deleted");
+            logger.info("Reservation" + id + "is no longer active");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 

@@ -1,7 +1,6 @@
 package restapi.webapp.Dtos.Get;
 
 import restapi.webapp.Builders.IHasId;
-import restapi.webapp.Dtos.Get.SeatPackageDto;
 import restapi.webapp.Dtos.KeyValuePair;
 
 import java.time.LocalDateTime;
@@ -12,13 +11,13 @@ public class ShowTimeDto implements IHasId {
     private LocalDateTime startTime;
 
     private KeyValuePair movie;
-    private List<SeatPackageDto> seatPackage;
+    private List<SeatPackageGetDto> seatPackage;
 
-    public List<SeatPackageDto> getSeatPackage() {
+    public List<SeatPackageGetDto> getSeatPackage() {
         return seatPackage;
     }
 
-    public void setSeatPackage(List<SeatPackageDto> seatPackage) {
+    public void setSeatPackage(List<SeatPackageGetDto> seatPackage) {
         this.seatPackage = seatPackage;
     }
 

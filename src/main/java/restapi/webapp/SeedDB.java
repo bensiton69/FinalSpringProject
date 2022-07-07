@@ -111,6 +111,8 @@ class SeedDB {
         logger.info("sp1: " + seatPackage1);
         logger.info("sp2: " + seatPackage2);
 
+        seatPackage1.setAvailable(false);
+        seatPackage2.setAvailable(false);
         seatPackages.add(seatPackage1);
         seatPackages.add(seatPackage2);
 
