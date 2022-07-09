@@ -14,7 +14,7 @@ import restapi.webapp.Dtos.Get.CostumerUserGetDto;
 import restapi.webapp.Dtos.Set.CostumerUserSetDto;
 import restapi.webapp.Mappers.IMapperCinema;
 import restapi.webapp.Models.CostumerUser;
-import restapi.webapp.Models.Status;
+import restapi.webapp.Enums.Status;
 import restapi.webapp.Repositories.UserRepos;
 import restapi.webapp.Services.ActivationService;
 

@@ -2,6 +2,7 @@ package restapi.webapp.Models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import restapi.webapp.Enums.Status;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import restapi.webapp.Dtos.Set.ReservationSetDto;
 import restapi.webapp.Models.*;
 import restapi.webapp.Repositories.*;
-import restapi.webapp.Services.InitShowTimeService;
+import restapi.webapp.Services.ShowTimeService;
 import restapi.webapp.Services.ReservationService;
 //import restapi.webapp.Repositories.SeatPackageRepos;
 //import restapi.webapp.Repositories.UserRepos;
@@ -19,7 +19,6 @@ import restapi.webapp.Services.ReservationService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -38,12 +37,12 @@ class SeedDB {
             ShowTimeRepos showTimeRepos,
             SeatPackageRepos seatPackageRepos,
             ReservationService reservationService,
-            InitShowTimeService initShowTimeService) {
+            ShowTimeService showTimeService) {
         // runner gets a copy of the new DB and creates the following
         // products and saves them
         return args -> {
             seedUsers(userRepos);
-            seedShowTimes(movieRepos, initShowTimeService);
+            seedShowTimes(movieRepos, showTimeService);
             seedReservations(showTimeRepos, userRepos,reservationRepos);
             SeedReservationsViaService(reservationService, userRepos, seatPackageRepos,showTimeRepos,reservationRepos);
         };
@@ -61,14 +60,14 @@ class SeedDB {
 
     }
 
-    private void seedShowTimes(MovieRepos movieRepos, InitShowTimeService initShowTimeService) {
+    private void seedShowTimes(MovieRepos movieRepos, ShowTimeService showTimeService) {
 
         Movie hp1 = movieRepos.findById(1L).get();
 
         ShowTime showTime =
-                initShowTimeService.InitShowTime(hp1, 10, 10, LocalDateTime.now().plusHours(2));
+                showTimeService.InitShowTime(hp1, LocalDateTime.now().plusHours(2));
         ShowTime showTime2 =
-                initShowTimeService.InitShowTime(hp1, 10, 10, LocalDateTime.now().plusHours(4));
+                showTimeService.InitShowTime(hp1, LocalDateTime.now().plusHours(4));
 
         movieRepos.save(hp1);
     }

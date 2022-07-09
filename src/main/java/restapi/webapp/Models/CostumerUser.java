@@ -2,7 +2,7 @@ package restapi.webapp.Models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.repository.cdi.Eager;
+import restapi.webapp.Enums.Status;
 
 import javax.persistence.*;
 import java.util.ArrayList;

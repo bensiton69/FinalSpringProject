@@ -4,7 +4,7 @@ import lombok.Data;
 import restapi.webapp.Builders.IHasId;
 import restapi.webapp.Dtos.KeyValuePair;
 import restapi.webapp.Models.IActivable;
-import restapi.webapp.Models.Status;
+import restapi.webapp.Enums.Status;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

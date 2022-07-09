@@ -39,7 +39,6 @@ public class TestingController implements IControllerInterface<ReservationGetDto
     private final IMapperCinema mapperCinema;
     private final BuilderEntityFactory<ReservationGetDto> reservationEntityFactory;
 
-
     public TestingController(MovieRepos movieRepos, ShowTimeRepos showTimeRepos, ReservationRepos reservationRepos, UserRepos userRepos, SeatPackageRepos seatPackageRepos, ReservationService reservationService, IMapperCinema mapperCinema) {
         this.movieRepos = movieRepos;
         this.showTimeRepos = showTimeRepos;
@@ -49,9 +48,7 @@ public class TestingController implements IControllerInterface<ReservationGetDto
         this.reservationService = reservationService;
         this.mapperCinema = mapperCinema;
         this.reservationEntityFactory = new BuilderEntityFactory<>(this);
-
     }
-
 
     @PostMapping("/TestReservations")
     public ResponseEntity<?> newProduct(@RequestBody ReservationSetDto reservationSetDto){

@@ -3,7 +3,7 @@ package restapi.webapp.Services;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 import restapi.webapp.Models.IActivable;
-import restapi.webapp.Models.Status;
+import restapi.webapp.Enums.Status;
 
 @Service
 public class ActivationService {

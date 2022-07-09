@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import restapi.webapp.Models.CostumerUser;
 import restapi.webapp.Models.Reservation;
 import restapi.webapp.Models.SeatPackage;
-import restapi.webapp.Models.Status;
+import restapi.webapp.Enums.Status;
 import restapi.webapp.Repositories.ReservationRepos;
 import restapi.webapp.Repositories.SeatPackageRepos;
 import restapi.webapp.Repositories.ShowTimeRepos;

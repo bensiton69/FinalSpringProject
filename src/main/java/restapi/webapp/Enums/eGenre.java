@@ -13,5 +13,4 @@ public enum eGenre {
     Drama,
     Fantasy,
     Family,
-
 }
