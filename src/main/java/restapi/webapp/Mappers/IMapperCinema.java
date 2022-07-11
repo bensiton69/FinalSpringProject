@@ -6,8 +6,9 @@ import restapi.webapp.Dtos.Get.ReservationGetDto;
 import restapi.webapp.Dtos.KeyValuePair;
 import restapi.webapp.Dtos.Get.MovieGetDto;
 import restapi.webapp.Dtos.Get.SeatPackageGetDto;
-import restapi.webapp.Dtos.Get.ShowTimeDto;
+import restapi.webapp.Dtos.Get.ShowTimeGetDto;
 import restapi.webapp.Dtos.Set.CostumerUserSetDto;
+import restapi.webapp.Dtos.Set.ShowTimeSetDto;
 import restapi.webapp.Models.*;
 
 @Service
@@ -15,7 +16,7 @@ public interface IMapperCinema {
     // from DAO to DTO
     MovieGetDto MapFromMovieToMovieGetDto(Movie movie);
     KeyValuePair MapFromShowTimeToKVP(ShowTime showTime);
-    ShowTimeDto MapFromShowTimeToShowTimeDto(ShowTime showTime);
+    ShowTimeGetDto MapFromShowTimeToShowTimeDto(ShowTime showTime);
     KeyValuePair MapFromMovieToKVP(Movie movie);
     SeatPackageGetDto MapFromSeatPackageToSeatPackageGetDto(SeatPackage seatPackage);
     ReservationGetDto MapFromReservationToReservationGetDto(Reservation reservation);
@@ -25,4 +26,5 @@ public interface IMapperCinema {
     // from DTO to DAO
     CostumerUser MapFromCostumerUserSetDtoToCostumerUser(CostumerUserSetDto costumerUserSetDto);
     CostumerUser MapFromCostumerUserGetDtoToCostumerUser(CostumerUserGetDto costumerUserGetDto);
+
 }

@@ -6,7 +6,7 @@ import restapi.webapp.Dtos.KeyValuePair;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class ShowTimeDto implements IHasId {
+public class ShowTimeGetDto implements IHasId {
     private Long id;
     private LocalDateTime startTime;
 
@@ -45,6 +45,6 @@ public class ShowTimeDto implements IHasId {
         this.movie = movie;
     }
 
-    public ShowTimeDto() {
+    public ShowTimeGetDto() {
     }
 }

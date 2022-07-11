@@ -8,8 +8,9 @@ import restapi.webapp.Dtos.Get.ReservationGetDto;
 import restapi.webapp.Dtos.KeyValuePair;
 import restapi.webapp.Dtos.Get.MovieGetDto;
 import restapi.webapp.Dtos.Get.SeatPackageGetDto;
-import restapi.webapp.Dtos.Get.ShowTimeDto;
+import restapi.webapp.Dtos.Get.ShowTimeGetDto;
 import restapi.webapp.Dtos.Set.CostumerUserSetDto;
+import restapi.webapp.Dtos.Set.ShowTimeSetDto;
 import restapi.webapp.Models.*;
 
 import java.util.stream.Collectors;
@@ -41,18 +42,18 @@ public class MapperCinema implements IMapperCinema {
         return new KeyValuePair(showTime.getId(), showTime.getStartTime().toString());
     }
 
-    public ShowTimeDto MapFromShowTimeToShowTimeDto(ShowTime showTime){
-        ShowTimeDto showTimeDto = new ShowTimeDto();
-        showTimeDto.setStartTime(showTime.getStartTime());
-        showTimeDto.setId(showTime.getId());
-        showTimeDto.setMovie(MapFromMovieToKVP(showTime.getMovie()));
-        showTimeDto.setSeatPackage(
+    public ShowTimeGetDto MapFromShowTimeToShowTimeDto(ShowTime showTime){
+        ShowTimeGetDto showTimeGetDto = new ShowTimeGetDto();
+        showTimeGetDto.setStartTime(showTime.getStartTime());
+        showTimeGetDto.setId(showTime.getId());
+        showTimeGetDto.setMovie(MapFromMovieToKVP(showTime.getMovie()));
+        showTimeGetDto.setSeatPackage(
                 showTime.getSeatPackages()
                         .stream()
                         .map(this::MapFromSeatPackageToSeatPackageGetDto)
                         .collect(Collectors.toList()));
 
-        return showTimeDto;
+        return showTimeGetDto;
     }
 
     public KeyValuePair MapFromMovieToKVP(Movie movie) {
@@ -120,4 +121,5 @@ public class MapperCinema implements IMapperCinema {
         costumerUser.setId(costumerUser.getId());
         return costumerUser;
     }
+
 }

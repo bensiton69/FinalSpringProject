@@ -77,33 +77,6 @@ public class ReservationController implements IControllerInterface<ReservationGe
                                 .collect(Collectors.toList())));
     }
 
-//    @PostMapping("/Reservations")
-//    public ResponseEntity<?> postReservation(@RequestBody ReservationSetDto reservationSetDto) {
-//        CostumerUser costumerUser = (userRepos.findById(reservationSetDto.getCostumerUserId()).get());
-//
-//        List<SeatPackage> seatPackageList = new ArrayList<>();
-//        for (Long id : reservationSetDto.getSeatPackagesId())
-//        {
-//            seatPackageList.add(seatPackageRepos.findById(id).get());
-//        }
-//
-//        Optional<Reservation> optionalReservation = reservationService.SafeReservation(seatPackageList,costumerUser, userRepos, reservationRepos);
-//
-//        String logInfo = optionalReservation.isPresent() ? "success" : "error";
-//        logger.info("safe service: " + logInfo);
-//
-//        if (optionalReservation.isPresent())
-//        {
-//            return
-//                    ResponseEntity.ok(
-//                mapperCinema.MapFromReservationToReservationGetDto(optionalReservation.get())
-//        );
-//        }
-//        else
-//            return ResponseEntity.badRequest().body("Cannot create the product corresponding to " + reservationSetDto);
-//
-//    }
-
     @PostMapping("/Reservations")
     public ResponseEntity<?> newProduct(@RequestBody ReservationSetDto reservationSetDto){
         CostumerUser costumerUser = (userRepos.findById(reservationSetDto.getCostumerUserId()).get());
@@ -112,7 +85,7 @@ public class ReservationController implements IControllerInterface<ReservationGe
         {
             seatPackageList.add(seatPackageRepos.findById(id).get());
         }
-        Optional<Reservation> optionalReservation = reservationService.SafeReservation(seatPackageList,costumerUser, userRepos, reservationRepos);
+        Optional<Reservation> optionalReservation = reservationService.SafeReservation(seatPackageList,costumerUser);
         try{
             Reservation reservation = optionalReservation.get();
             ReservationGetDto reservationGetDto = mapperCinema.MapFromReservationToReservationGetDto(reservation);
@@ -129,18 +102,39 @@ public class ReservationController implements IControllerInterface<ReservationGe
     }
 
 
-//    @PutMapping("/Reservations/{id}")
-//    public ResponseEntity<?> putReservation(@RequestBody ReservationSetDto reservationSetDto){
-//
-//    }
+    @PutMapping("/Reservations/{id}")
+    public ResponseEntity<?> putReservation(@PathVariable Long id,@RequestBody ReservationSetDto reservationSetDto){
+
+        Reservation oldReservation = reservationRepos.findById(id).orElseThrow();
+        Optional<Reservation> optionalReservation = reservationService.SafePutReservation(oldReservation, reservationSetDto);
+
+        return getResponseEntity(reservationSetDto, optionalReservation, mapperCinema, reservationEntityFactory);
+
+    }
+
+    static ResponseEntity<?> getResponseEntity(@RequestBody ReservationSetDto reservationSetDto, Optional<Reservation> optionalReservation, IMapperCinema mapperCinema, BuilderEntityFactory<ReservationGetDto> reservationEntityFactory) {
+        try{
+            Reservation reservation = optionalReservation.get();
+            ReservationGetDto reservationGetDto = mapperCinema.MapFromReservationToReservationGetDto(reservation);
+            EntityModel<ReservationGetDto> entityReservation = reservationEntityFactory.toModel(reservationGetDto);
+            return
+                    // status code 201
+                    ResponseEntity.created(new URI(entityReservation.getRequiredLink(IanaLinkRelations.SELF)
+                            .getHref())).body(entityReservation);
+        } catch (Exception e) {
+            return
+                    // status code: 400
+                    ResponseEntity.badRequest().body("Cannot create the product corresponding to " + reservationSetDto);
+        }
+    }
 
     @DeleteMapping("/Reservations/{id}")
     public ResponseEntity deleteReservation(@PathVariable Long id){
-        if(reservationRepos.findById(id).isPresent() == false)
+        if(reservationRepos.existsById(id) == false)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         else
         {
-            reservationService.RemoveReservation(id, reservationRepos, seatPackageRepos);
+            reservationService.RemoveReservation(id);
             logger.info("Reservation" + id + "is no longer active");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

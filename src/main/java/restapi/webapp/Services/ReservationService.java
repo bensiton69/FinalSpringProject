@@ -4,6 +4,7 @@ package restapi.webapp.Services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import restapi.webapp.Dtos.Set.ReservationSetDto;
 import restapi.webapp.Models.CostumerUser;
 import restapi.webapp.Models.Reservation;
 import restapi.webapp.Models.SeatPackage;
@@ -13,6 +14,7 @@ import restapi.webapp.Repositories.SeatPackageRepos;
 import restapi.webapp.Repositories.ShowTimeRepos;
 import restapi.webapp.Repositories.UserRepos;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.locks.ReentrantLock;
@@ -24,17 +26,21 @@ public class ReservationService {
     private static final Logger logger = LoggerFactory.getLogger(ReservationService.class);
     private final ActivationService activationService;
     private final ShowTimeRepos showTimeRepos;
+    private final ReservationRepos reservationRepos;
+    private final SeatPackageRepos seatPackageRepos;
+    private final UserRepos userRepos;
 
-    public ReservationService(ActivationService activationService, ShowTimeRepos showTimeRepos) {
+    public ReservationService(ActivationService activationService, ShowTimeRepos showTimeRepos, ReservationRepos reservationRepos, SeatPackageRepos seatPackageRepos, UserRepos userRepos) {
         this.activationService = activationService;
         this.showTimeRepos = showTimeRepos;
+        this.reservationRepos = reservationRepos;
+        this.seatPackageRepos = seatPackageRepos;
+        this.userRepos = userRepos;
     }
 
 
     public Optional<Reservation> SafeReservation(List<SeatPackage> seatPackages,
-                                                 CostumerUser costumerUser,
-                                                 UserRepos userRepos,
-                                                 ReservationRepos reservationRepos)
+                                                 CostumerUser costumerUser)
     {
         reentrantLock.lock();
         Optional<Reservation> optionalReservation = Optional.empty();
@@ -72,14 +78,21 @@ public class ReservationService {
      * Makes some reservation and all its seat packages inactive,
      * Also creates new SeatPackages with same props into the DB
      * @param id - Reservation ID
-     * @param reservationRepos - Reservation repository
-     * @param seatPackageRepos - SeatPackage repository
      */
-    public void RemoveReservation(Long id, ReservationRepos reservationRepos, SeatPackageRepos seatPackageRepos) {
+    public void RemoveReservation(Long id) {
         Reservation reservation = reservationRepos.findById(id).get();
         List<SeatPackage> seatPackages = reservation.getSeatPackages();
         activationService.Deactivate(reservation, reservationRepos);
         // TODO: add showtime details
+        deactiveSeatPackageAndInsertIntoArchive(seatPackages);
+        reservationRepos.save(reservation);
+    }
+
+    /**
+     * Deactive List of SeatPackage, and creates new one instead
+     * @param seatPackages to deactive
+     */
+    private void deactiveSeatPackageAndInsertIntoArchive(List<SeatPackage> seatPackages) {
         for (SeatPackage seatPackage : seatPackages)
         {
             logger.info("saving: " + seatPackageRepos.save(new SeatPackage(
@@ -90,8 +103,29 @@ public class ReservationService {
             )));
             seatPackage.setStatus(Status.Inactive);
         }
-        reservationRepos.save(reservation);
+    }
 
-//        seatPackageRepos.saveAll(seatPackages);
+    public Optional<Reservation> SafePutReservation(Reservation oldReservation, ReservationSetDto newReservation) {
+        CostumerUser costumerUser = (userRepos.findById(newReservation.getCostumerUserId()).get());
+
+        // archive old reservation
+        List<SeatPackage> seatPackageListOld = oldReservation.getSeatPackages();
+
+
+        List<SeatPackage> seatPackageListNew = new ArrayList<>();
+        for (Long seatPackageId : newReservation.getSeatPackagesId())
+        {
+            SeatPackage toAdd = seatPackageRepos.findById(seatPackageId).get();
+            seatPackageListNew.add(toAdd);
+            if (seatPackageListOld.contains(toAdd))
+                seatPackageListOld.remove(toAdd);
+        }
+
+        deactiveSeatPackageAndInsertIntoArchive(seatPackageListOld);
+        oldReservation.setStatus(Status.Inactive);
+        reservationRepos.save(oldReservation);
+
+        return SafeReservation(seatPackageListNew,costumerUser);
+
     }
 }

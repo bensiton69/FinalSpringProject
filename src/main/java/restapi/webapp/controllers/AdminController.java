@@ -29,36 +29,7 @@ public class AdminController {
     }
 
 
-    @PostMapping("/AdminActions/SeedMovies")
-    public ResponseEntity seedMovies(){
-        try {
-            asyncRunner.SeedMovies();
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Could not seed new movies");
-        }
-        return ResponseEntity.ok("Seed new movies: success");
-    }
 
-    @PostMapping("/AdminActions/SeedSingleMovie")
-    public ResponseEntity seedSingleMovie(){
-        try {
-//            asyncRunner.SeedSingle();
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Could not seed new movies");
-        }
-        return ResponseEntity.ok("Seed new movies: success");
-    }
 
-    @PostMapping("/AdminActions/SeedShowTimes")
-    public ResponseEntity seedShowTimes(){
-        try {
-            List<Movie> movies = ((List<Movie>)movieRepos.findAll());
-            showTimeService.createNewShowTimes(movies);
-            movieRepos.saveAll(movies);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Could not seed new movies");
-        }
-        return ResponseEntity.ok("Seed new movies: success");
-    }
 
 }

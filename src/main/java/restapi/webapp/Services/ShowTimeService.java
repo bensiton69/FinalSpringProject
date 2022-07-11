@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +27,8 @@ public class ShowTimeService {
 
     public ShowTimeService(ShowTimeRepos showTimeRepos) {
         this.showTimeRepos = showTimeRepos;
-        openingTime = LocalTime.of(11,00);
-        closingTime = LocalTime.of(00,30);
+        openingTime = LocalTime.of(9,00);
+        closingTime = LocalTime.of(21,00);
         numOfRows = 10;
         numOfCols = 10;
     }
@@ -44,7 +45,6 @@ public class ShowTimeService {
         List<ShowTime> showTimes = new ArrayList<>();
 
         for (Movie m: movies){
-//            dateTime = nextAvailableDateTime();
             dateTime = nextAvailableDateTimeByST(showTimes);
             ShowTime showTime = new ShowTime(dateTime, m);
             initSeatPackageForShowTime(showTime);
@@ -53,18 +53,6 @@ public class ShowTimeService {
         }
 
         return showTimes;
-    }
-
-    private LocalDateTime nextAvailableDateTime() {
-        ShowTime last = ((List<ShowTime>)showTimeRepos.findAll())
-                .get(((List<ShowTime>) showTimeRepos.findAll()).size() -1);
-
-        LocalDateTime roundUpLastShowTimeFinishingTime =
-                roundUpMinutes(last.getStartTime().plusMinutes(last.getMovie().getDuration()));
-
-        return roundUpLastShowTimeFinishingTime.isBefore(LocalDateTime.of(LocalDate.now(), closingTime)) ?
-                roundUpLastShowTimeFinishingTime :
-                LocalDateTime.of(roundUpLastShowTimeFinishingTime.toLocalDate(), openingTime);
     }
 
     private LocalDateTime nextAvailableDateTimeByST(List<ShowTime> showTimes) {
@@ -76,10 +64,12 @@ public class ShowTimeService {
 
         LocalDateTime roundUpLastShowTimeFinishingTime =
                 roundUpMinutes(last.getStartTime().plusMinutes(last.getMovie().getDuration()));
-        LocalDateTime toCheck = LocalDateTime.of(last.getStartTime().toLocalDate().plusDays(1), closingTime);
+        LocalDateTime toCheck = LocalDateTime.of(roundUpLastShowTimeFinishingTime.toLocalDate(), closingTime);
+
+
         return roundUpLastShowTimeFinishingTime.isBefore(toCheck) ?
                 roundUpLastShowTimeFinishingTime :
-                LocalDateTime.of(roundUpLastShowTimeFinishingTime.toLocalDate(), openingTime);
+                LocalDateTime.of(roundUpLastShowTimeFinishingTime.toLocalDate().plusDays(1), openingTime);
     }
 
     private void initSeatPackageForShowTime(ShowTime showTime){
@@ -94,8 +84,8 @@ public class ShowTimeService {
     private LocalDateTime roundUpMinutes(LocalDateTime dateTime){
         int numOfMinutesToRoundUpTo = 30;
 
-//        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
-//        df.format(dateTime);
+        dateTime = dateTime.truncatedTo(ChronoUnit.MINUTES);
+
         int currentMinutes = dateTime.getMinute();
 
         if (currentMinutes < numOfMinutesToRoundUpTo)

@@ -136,7 +136,7 @@ class SeedDB {
 
         CostumerUser costumerUser = ((List<CostumerUser>) userRepos.findAll()).get(1);
 
-        reservationService.SafeReservation(seatPackageList ,costumerUser, userRepos, reservationRepos);
+        reservationService.SafeReservation(seatPackageList ,costumerUser);
 
     }
 }
