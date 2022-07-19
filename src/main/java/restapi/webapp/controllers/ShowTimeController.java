@@ -18,6 +18,7 @@ import restapi.webapp.Models.Movie;
 import restapi.webapp.Models.ShowTime;
 import restapi.webapp.Repositories.MovieRepos;
 import restapi.webapp.Repositories.ShowTimeRepos;
+import restapi.webapp.Services.ActivationService;
 import restapi.webapp.Services.ShowTimeService;
 
 import java.time.LocalDate;
@@ -28,6 +29,10 @@ import java.util.stream.StreamSupport;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
+/**
+ * Reservation REST controller
+ * Implements IControllerInterface of ShowTimeGetDto
+ */
 @RestController
 public class ShowTimeController implements IControllerInterface<ShowTimeGetDto> {
     private final ShowTimeRepos showTimeRepos;
@@ -35,20 +40,26 @@ public class ShowTimeController implements IControllerInterface<ShowTimeGetDto> 
     private final ShowTimeService showTimeService;
     private final IMapperCinema mapperCinema;
     private final BuilderEntityFactory<ShowTimeGetDto> showTimeEntityFactory;
+    private final ActivationService activationService;
     private static final Logger logger = LoggerFactory.getLogger(ShowTimeController.class);
 
-    public ShowTimeController(ShowTimeRepos showTimeRepos, MovieRepos movieRepos, ShowTimeService showTimeService, IMapperCinema mapperCinema) {
+    public ShowTimeController(ShowTimeRepos showTimeRepos, MovieRepos movieRepos, ShowTimeService showTimeService, IMapperCinema mapperCinema, ActivationService activationService) {
         this.showTimeRepos = showTimeRepos;
         this.movieRepos = movieRepos;
         this.showTimeService = showTimeService;
         this.mapperCinema = mapperCinema;
+        this.activationService = activationService;
         this.showTimeEntityFactory = new BuilderEntityFactory<ShowTimeGetDto>(this);
     }
 
-
+    /**
+     * takes id as param and return single ShowTimeGetDto
+     * @param id ShowTime id
+     * @return ResponseEntity of EntityModel of ShowTimeGetDto
+     */
     @GetMapping("/ShowTimes/{id}")
     @Override
-    public ResponseEntity<EntityModel<ShowTimeGetDto>> getById(Long id) {
+    public ResponseEntity<EntityModel<ShowTimeGetDto>> getById(@PathVariable Long id) {
         return  showTimeRepos.findById(id)
                 .map(mapperCinema::MapFromShowTimeToShowTimeDto)
                 .map(showTimeEntityFactory::toModel)
@@ -56,6 +67,9 @@ public class ShowTimeController implements IControllerInterface<ShowTimeGetDto> 
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * @return ResponseEntity of collection model of EntityModel of ShowTimeGetDto
+     */
     @GetMapping("/ShowTimes")
     @Override
     public ResponseEntity<CollectionModel<EntityModel<ShowTimeGetDto>>> getAsResponseEntity() {
@@ -67,7 +81,11 @@ public class ShowTimeController implements IControllerInterface<ShowTimeGetDto> 
                                 .collect(Collectors.toList())));
     }
 
-
+    /**
+     * returns
+     * @param someParameter
+     * @return
+     */
     @GetMapping("/ShowTimes/AsKVP")
     @ResponseBody
     public List<?> getOptionalMessageWithLocalDate(
@@ -79,9 +97,7 @@ public class ShowTimeController implements IControllerInterface<ShowTimeGetDto> 
                         .stream()
                         .filter(st -> st.getStartTime().toLocalDate().isAfter(someParameter.get()) ||
                                 st.getStartTime().toLocalDate().isEqual(someParameter.get()))
-                        .map(showTime -> {
-                            return new KeyValuePair(showTime.getId(), showTime.getMovie().getName() + showTime.getStartTime());
-                        })
+                        .map(showTime -> new KeyValuePair(showTime.getId(), showTime.getMovie().getName() + showTime.getStartTime()))
                         .collect(Collectors.toList());
     }
 
@@ -103,7 +119,8 @@ public class ShowTimeController implements IControllerInterface<ShowTimeGetDto> 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         else
         {
-            showTimeRepos.deleteById(id);
+            ShowTime showTime = showTimeRepos.findById(id).get();
+            activationService.DeactivateWithProps(showTime,showTimeRepos);
             logger.info("ST" + id + "deleted");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

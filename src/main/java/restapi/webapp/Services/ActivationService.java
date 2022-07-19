@@ -4,6 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 import restapi.webapp.Models.IActivable;
 import restapi.webapp.Enums.Status;
+import restapi.webapp.Models.ShowTime;
 
 @Service
 public class ActivationService {
@@ -28,5 +29,9 @@ public class ActivationService {
         crudRepository.save(entity);
     }
 
+    public void DeactivateWithProps(ShowTime showTime, CrudRepository crudRepository) {
+        System.out.println();
+
+    }
 
 }

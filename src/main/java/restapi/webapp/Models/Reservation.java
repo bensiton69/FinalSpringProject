@@ -22,14 +22,8 @@ public class Reservation implements IActivable {
     private LocalDateTime startTime;
     private Status status = Status.Active;
 
-
-//    @ManyToOne
-//    @JoinColumn(name = "showTime_id")
-//    private ShowTime showTime;
-
     @OneToMany(
             cascade = CascadeType.MERGE,
-            orphanRemoval = true,
             fetch = FetchType.EAGER
     )
     private List<SeatPackage> seatPackages = new ArrayList<SeatPackage>();

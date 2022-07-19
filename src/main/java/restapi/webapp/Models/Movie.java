@@ -45,4 +45,9 @@ public class Movie {
     public void addShowTime(ShowTime showTime){
         showTimes.add(showTime);
     }
+
+    public void removeShowTime(ShowTime showTime){
+        if (showTimes.contains(showTime))
+            showTimes.remove(showTime);
+    }
 }

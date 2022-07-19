@@ -1,6 +1,5 @@
 package restapi.webapp.controllers;
 
-import org.hibernate.annotations.NotFound;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.CollectionModel;
@@ -23,16 +22,18 @@ import restapi.webapp.Repositories.UserRepos;
 import restapi.webapp.Services.ReservationService;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 
+/**
+ * Reservation REST controller
+ * Implements IControllerInterface of ReservationGetDto
+ */
 @RestController
 public class ReservationController implements IControllerInterface<ReservationGetDto> {
     private final ReservationRepos reservationRepos;
@@ -56,6 +57,11 @@ public class ReservationController implements IControllerInterface<ReservationGe
         this.reservationEntityFactory = new BuilderEntityFactory<>(this);
     }
 
+    /**
+     * takes id as param and return single ReservationGetDto
+     * @param id Reservation id
+     * @return ResponseEntity of EntityModel of ReservationGetDto
+     */
     @GetMapping("/Reservations/{id}")
     @Override
     public ResponseEntity<EntityModel<ReservationGetDto>> getById(@PathVariable Long id) {
@@ -66,6 +72,9 @@ public class ReservationController implements IControllerInterface<ReservationGe
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * @return ResponseEntity of collection model of EntityModel of MovieGetDto
+     */
     @GetMapping("/Reservations")
     @Override
     public ResponseEntity<CollectionModel<EntityModel<ReservationGetDto>>> getAsResponseEntity() {
@@ -77,8 +86,15 @@ public class ReservationController implements IControllerInterface<ReservationGe
                                 .collect(Collectors.toList())));
     }
 
+    //TODO: move logic from here
+    /**
+     * POST request to post new Reservation
+     * Using ReservationService
+     * @param reservationSetDto ReservationSetDto as body param
+     * @return ResponseEntity of unknown type (?)
+     */
     @PostMapping("/Reservations")
-    public ResponseEntity<?> newProduct(@RequestBody ReservationSetDto reservationSetDto){
+    public ResponseEntity<?> newReservation(@RequestBody ReservationSetDto reservationSetDto){
         CostumerUser costumerUser = (userRepos.findById(reservationSetDto.getCostumerUserId()).get());
         List<SeatPackage> seatPackageList = new ArrayList<>();
         for (Long id : reservationSetDto.getSeatPackagesId())
@@ -101,7 +117,12 @@ public class ReservationController implements IControllerInterface<ReservationGe
         }
     }
 
-
+    /**
+     * PUT request to update some Reservation entity
+     * @param id reservation id to update
+     * @param reservationSetDto reservation as setDto as body param
+     * @return ResponseEntity of unknown type (?)
+     */
     @PutMapping("/Reservations/{id}")
     public ResponseEntity<?> putReservation(@PathVariable Long id,@RequestBody ReservationSetDto reservationSetDto){
 
@@ -112,6 +133,7 @@ public class ReservationController implements IControllerInterface<ReservationGe
 
     }
 
+    // TODO: document it
     static ResponseEntity<?> getResponseEntity(@RequestBody ReservationSetDto reservationSetDto, Optional<Reservation> optionalReservation, IMapperCinema mapperCinema, BuilderEntityFactory<ReservationGetDto> reservationEntityFactory) {
         try{
             Reservation reservation = optionalReservation.get();
@@ -128,6 +150,11 @@ public class ReservationController implements IControllerInterface<ReservationGe
         }
     }
 
+    /**
+     * DELETE request to delete reservation entity
+     * @param id reservation id to delete
+     * @return ResponseEntity
+     */
     @DeleteMapping("/Reservations/{id}")
     public ResponseEntity deleteReservation(@PathVariable Long id){
         if(reservationRepos.existsById(id) == false)

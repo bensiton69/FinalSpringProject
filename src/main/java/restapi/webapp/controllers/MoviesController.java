@@ -18,6 +18,10 @@ import restapi.webapp.Services.MovieService;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+/**
+ * Movie REST controller
+ * Implements IControllerInterface of MovieGetDto
+ */
 @RestController
 public class MoviesController implements IControllerInterface<MovieGetDto> {
     private final MovieRepos movieRepos;
@@ -36,7 +40,12 @@ public class MoviesController implements IControllerInterface<MovieGetDto> {
         movieEntityFactory = new BuilderEntityFactory<>(this);
     }
 
-    @GetMapping("/movies/getById/{id}")
+    /**
+     *  takes id as param and return single MovieGetDto
+     * @param id movie id
+     * @return ResponseEntity of EntityModel of MovieGetDto
+     */
+    @GetMapping("/Movies/{id}")
     @Override
     public ResponseEntity<EntityModel<MovieGetDto>> getById(@PathVariable Long id) {
         return movieRepos.findById(id)
@@ -46,7 +55,10 @@ public class MoviesController implements IControllerInterface<MovieGetDto> {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/movies/getAll")
+    /**
+     * @return ResponseEntity of collection model of EntityModel of MovieGetDto
+     */
+    @GetMapping("/Movies")
     @Override
     public ResponseEntity<CollectionModel<EntityModel<MovieGetDto>>> getAsResponseEntity() {
         return ResponseEntity.ok(
@@ -57,6 +69,12 @@ public class MoviesController implements IControllerInterface<MovieGetDto> {
                                 .collect(Collectors.toList())));
     }
 
+    /**
+     * Demonstrate admin action
+     * takes movie id as parameter and removes it from the repos
+     * @param id movie id
+     * @return response entity
+     */
     @DeleteMapping("/Movies/AdminActions/Remove/{id}")
     public ResponseEntity removeMovie(@PathVariable Long id){
         if(movieRepos.existsById(id) == false)
@@ -69,7 +87,11 @@ public class MoviesController implements IControllerInterface<MovieGetDto> {
         }
     }
 
-
+    /**
+     * Demonstrate admin action
+     * will apply to external api and save new movies using async runner
+     * @return response entity
+     */
     @PostMapping("/Movies/AdminActions/AddMovies")
     public ResponseEntity seedMovies(){
         try {
@@ -80,6 +102,7 @@ public class MoviesController implements IControllerInterface<MovieGetDto> {
         return ResponseEntity.ok("Seed new movies: success");
     }
 
+    // TODO: delete?
     @PostMapping("/Movies/AdminActions/AddSingleMovie")
     public ResponseEntity seedSingleMovie(){
         try {

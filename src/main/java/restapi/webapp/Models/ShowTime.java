@@ -2,6 +2,7 @@ package restapi.webapp.Models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import restapi.webapp.Enums.Status;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,11 +14,12 @@ import java.util.List;
 // TODO: change table name to ShowTime
 @Table(name = "showTime")
 @NoArgsConstructor
-public class ShowTime {
+public class ShowTime implements IActivable {
     @Id
     @GeneratedValue
     private Long id;
     private LocalDateTime startTime;
+    private Status status;
 
 
     @ManyToOne
