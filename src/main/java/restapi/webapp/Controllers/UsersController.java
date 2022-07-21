@@ -1,4 +1,4 @@
-package restapi.webapp.controllers;
+package restapi.webapp.Controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +39,11 @@ public class UsersController implements IControllerInterface<CostumerUserGetDto>
         this.userEntityFactory = new BuilderEntityFactory<CostumerUserGetDto>(this);
     }
 
+    /**
+     * GET endpoint to find UserById
+     * @param id
+     * @return user with id
+     */
     @GetMapping("/Users/{id}")
     @Override
     public ResponseEntity<EntityModel<CostumerUserGetDto>> getById(@PathVariable Long id) {
@@ -48,8 +53,10 @@ public class UsersController implements IControllerInterface<CostumerUserGetDto>
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
-    // TODO: return only active, and create another for inactive
+    /**
+     * GET endpoint to find all Users
+     * @return all users
+     */
     @GetMapping("/Users")
     @Override
     public ResponseEntity<CollectionModel<EntityModel<CostumerUserGetDto>>> getAsResponseEntity() {
@@ -61,6 +68,10 @@ public class UsersController implements IControllerInterface<CostumerUserGetDto>
                                 .collect(Collectors.toList())));
     }
 
+    /**
+     * GET endpoint to find all active Users
+     * @return all active users
+     */
     @GetMapping("/Users/Active")
     public ResponseEntity<CollectionModel<EntityModel<CostumerUserGetDto>>> getActiveUsers() {
         return ResponseEntity.ok(
@@ -75,6 +86,10 @@ public class UsersController implements IControllerInterface<CostumerUserGetDto>
                                 .collect(Collectors.toList())));
     }
 
+    /**
+     * GET endpoint to find all Users who have reservations
+     * @return all users who have reservations
+     */
     @GetMapping("/UsersWithReservations")
     public ResponseEntity<CollectionModel<EntityModel<CostumerUserGetDto>>> getUsersWithReservations() {
 
@@ -90,6 +105,11 @@ public class UsersController implements IControllerInterface<CostumerUserGetDto>
                                 .collect(Collectors.toList())));
     }
 
+    /**
+     * POST endpoint to create new User
+     * @param userSetDto
+     * @return ResponseEntity
+     */
     @PostMapping("/Users")
     public ResponseEntity<?> newProduct(@RequestBody CostumerUserSetDto userSetDto){
         CostumerUser newUser = mapperCinema.MapFromCostumerUserSetDtoToCostumerUser(userSetDto);
@@ -109,9 +129,13 @@ public class UsersController implements IControllerInterface<CostumerUserGetDto>
         }
     }
 
+    /**
+     * PUT endpoint to edit User
+     * @param id
+     * @param costumerUserSetDto
+     */
     @PutMapping("/Users/{id}")
     public ResponseEntity<?> putUser(@PathVariable Long id, @RequestBody CostumerUserSetDto costumerUserSetDto){
-        // TODO: ifPreserntedOrElse
         CostumerUser costumerUser =userRepos.findById(id).get();
         if (costumerUser == null)
             return ResponseEntity.notFound().build();
@@ -135,8 +159,11 @@ public class UsersController implements IControllerInterface<CostumerUserGetDto>
         }
     }
 
-    // TODO: allow this?
-    @DeleteMapping("Users/{id}")
+    /**
+     * PUT endpoint to delete User
+     * @param id
+     */
+    @DeleteMapping("Users/AdminActions/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id){
         if(userRepos.findById(id).isPresent() == false)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

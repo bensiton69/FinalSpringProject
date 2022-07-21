@@ -1,5 +1,7 @@
 package restapi.webapp.Dtos.Get;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.Data;
 import restapi.webapp.Builders.IHasId;
 import restapi.webapp.Dtos.KeyValuePair;
 import restapi.webapp.Models.ShowTime;
@@ -7,83 +9,17 @@ import restapi.webapp.Models.ShowTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonPropertyOrder({"id","name", "link","duration","yearOfPublish","genres","showTimes"})
+@Data
 public class MovieGetDto implements IHasId {
-// TODO: transfer to @DATA?
     private Long id;
     private String name;
     private String link;
     private int duration;
     private int yearOfPublish;
 
-    //TODO: Transfer to enum
     private String[] genres;
     private List<KeyValuePair> showTimes = new ArrayList<KeyValuePair>();
-
-    public MovieGetDto() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public int getYearOfPublish() {
-        return yearOfPublish;
-    }
-
-    public void setYearOfPublish(int yearOfPublish) {
-        this.yearOfPublish = yearOfPublish;
-    }
-
-    public String[] getGenres() {
-        return genres;
-    }
-
-    public void setGenres(String[] genres) {
-        this.genres = genres;
-    }
-
-    public List<KeyValuePair> getShowTimes() {
-        return showTimes;
-    }
-
-    public void setShowTimes(List<KeyValuePair> showTimes) {
-        this.showTimes = showTimes;
-    }
-
-    public void setShowTimesAsSTlist(List<ShowTime> showTimeLegs) {
-        for (ShowTime showTimeLeg : showTimeLegs)
-        {
-            this.showTimes.add(new KeyValuePair(showTimeLeg.getId(), showTimeLeg.getStartTime().toString()));
-        }
-    }
 
     public void AddShowTimesAsKVP(KeyValuePair keyValuePair) {
         showTimes.add(keyValuePair);

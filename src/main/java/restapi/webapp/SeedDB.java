@@ -80,8 +80,6 @@ class SeedDB {
         ShowTime showTime = ((List<ShowTime>) showTimeRepos.findAll()).get(0);
         CostumerUser costumerUser = ((List<CostumerUser>) userRepos.findAll()).get(0);
 
-        // TODO: change start time to showtime.startTime
-
         List<SeatPackage> seatPackages = new ArrayList<>();
 
 

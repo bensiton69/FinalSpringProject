@@ -1,4 +1,4 @@
-package restapi.webapp.controllers;
+package restapi.webapp.Controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 /**
  * Reservation REST controller
@@ -82,25 +81,30 @@ public class ShowTimeController implements IControllerInterface<ShowTimeGetDto> 
     }
 
     /**
-     * returns
-     * @param someParameter
+     * returns all showTIme that after the provided dateTime
+     * @param dateTime
      * @return
      */
     @GetMapping("/ShowTimes/AsKVP")
     @ResponseBody
-    public List<?> getOptionalMessageWithLocalDate(
-            @RequestParam
+    public List<KeyValuePair> getOptionalMessageWithLocalDate(
+            @RequestParam (required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            Optional<LocalDate> someParameter){
+            Optional<LocalDate> dateTime){
+
         return
-                ((List<ShowTime>)showTimeRepos.findAll())
+                        ((List<ShowTime>)showTimeRepos.findAll())
                         .stream()
-                        .filter(st -> st.getStartTime().toLocalDate().isAfter(someParameter.get()) ||
-                                st.getStartTime().toLocalDate().isEqual(someParameter.get()))
+                        .filter(st -> st.getStartTime().toLocalDate().isAfter(dateTime.orElse(LocalDate.MIN)) ||
+                                st.getStartTime().toLocalDate().isEqual(dateTime.orElse(LocalDate.MIN)))
                         .map(showTime -> new KeyValuePair(showTime.getId(), showTime.getMovie().getName() + showTime.getStartTime()))
                         .collect(Collectors.toList());
     }
 
+    /**
+     * Post Endpoint to create showTimes using ST service
+     * @return
+     */
     @PostMapping("/ShowTimes/AdminActions/CreateShowTimes")
     public ResponseEntity seedShowTimes(){
         try {
@@ -113,6 +117,10 @@ public class ShowTimeController implements IControllerInterface<ShowTimeGetDto> 
         return ResponseEntity.ok("Seed new movies: success");
     }
 
+    /**
+     * Delete Endpoint to remove showTimes
+     * @return
+     */
     @DeleteMapping("/ShowTimes/AdminActions/{id}")
     public ResponseEntity removeShowTime(@PathVariable Long id){
         if(showTimeRepos.existsById(id) == false)
@@ -120,12 +128,16 @@ public class ShowTimeController implements IControllerInterface<ShowTimeGetDto> 
         else
         {
             ShowTime showTime = showTimeRepos.findById(id).get();
-            activationService.DeactivateWithProps(showTime,showTimeRepos);
+            activationService.Deactivate(showTime,showTimeRepos);
             logger.info("ST" + id + "deleted");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 
+    /**
+     * PUT Endpoint to update showTimes
+     * @return
+     */
     @PutMapping("/ShowTimes/AdminActions/{id}")
     public ResponseEntity putShowTime(@PathVariable Long id, @RequestBody ShowTimeSetDto showTimeSetDto){
         if(movieRepos.existsById(showTimeSetDto.getMovieId()) == false
@@ -141,8 +153,13 @@ public class ShowTimeController implements IControllerInterface<ShowTimeGetDto> 
         }
     }
 
+    /**
+     * Post Endpoint to create showTimes with showTimeSetDto
+     * @param showTimeSetDto the required Show time body param to post
+     * @return
+     */
     @PostMapping("/ShowTimes/AdminActions")
-    public ResponseEntity putShowTime(@RequestBody ShowTimeSetDto showTimeSetDto){
+    public ResponseEntity postShowTime(@RequestBody ShowTimeSetDto showTimeSetDto){
 
         if(movieRepos.existsById(showTimeSetDto.getMovieId()) == false)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

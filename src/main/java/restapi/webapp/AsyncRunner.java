@@ -6,11 +6,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import restapi.webapp.Models.Movie;
 
-import restapi.webapp.Models.ShowTime;
 import restapi.webapp.Repositories.MovieRepos;
 import restapi.webapp.Services.MovieService;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -49,12 +47,14 @@ public class AsyncRunner implements CommandLineRunner {
             movieRepos.save(m);
         }
 
-
         movieRepos.save(movie);
     }
 
-
-        public void SeedMovies() throws Exception {
+    /**
+     * will use the movie service and seed new movies to the database
+     * @throws Exception
+     */
+        public void SaveMovies() throws Exception {
         CompletableFuture<Movie[]> moviesTask = movieService.Movies();
         CompletableFuture.allOf(moviesTask).join();
         Movie[] movies = moviesTask.get();
@@ -62,18 +62,14 @@ public class AsyncRunner implements CommandLineRunner {
 
         moviesAsList.remove(0);
         movieRepos.saveAll(moviesAsList);
-
-
-//        movieRepos.save(movies[0]);
-//        for (Movie m : movies)
-//        {
-//            classLogger.info("movies = " + m);
-//            movieRepos.save(m);
-//        }
     }
 
-    public void SeedSingle() throws Exception {
-        CompletableFuture<Movie> movieTask = movieService.singleMovie(3);
+    /**
+     * will use the movie service and save single movie to the database
+     * @throws Exception
+     */
+    public void SaveSingle(int id) throws Exception {
+        CompletableFuture<Movie> movieTask = movieService.singleMovie(id);
         CompletableFuture<?>[] taskArrayMovie = new CompletableFuture[1];
 
         taskArrayMovie[0] = movieTask;

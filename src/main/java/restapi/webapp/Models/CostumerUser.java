@@ -29,8 +29,6 @@ public class CostumerUser implements ICostumer, IActivable{
     private List<Reservation> reservations= new ArrayList<>();
     private Status status = Status.Active;
     public CostumerUser(String username) {
-
-//        this.reservations = new ArrayList<>();
         this.username = username;
     }
 

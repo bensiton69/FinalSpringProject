@@ -33,6 +33,12 @@ public class ShowTimeService {
         numOfCols = 10;
     }
 
+    /**
+     * receive a movie and datetime and will initialize it to showtime
+     * @param movie to create show time
+     * @param startTime at the requested time
+     * @return ShowTime
+     */
     public ShowTime InitShowTime(Movie movie, LocalDateTime startTime){
         ShowTime showTime = new ShowTime(startTime, movie);
         initSeatPackageForShowTime(showTime);
@@ -40,6 +46,10 @@ public class ShowTimeService {
         return showTime;
     }
 
+    /**
+     * receive a movies and create a show times
+     * @return a list of showtimes that corresponding to the movie list
+     */
     public List<ShowTime> createNewShowTimes(List<Movie> movies){
         LocalDateTime dateTime = null;
         List<ShowTime> showTimes = new ArrayList<>();
@@ -55,6 +65,12 @@ public class ShowTimeService {
         return showTimes;
     }
 
+    /**
+     * will provide the next Available DateTime by opening/ closing time,
+     * considering the last showtime.
+     * @param showTimes the showtimes in the system
+     * @return
+     */
     private LocalDateTime nextAvailableDateTimeByST(List<ShowTime> showTimes) {
 
         ShowTime last = showTimes.size() == 0 ?
@@ -72,6 +88,10 @@ public class ShowTimeService {
                 LocalDateTime.of(roundUpLastShowTimeFinishingTime.toLocalDate().plusDays(1), openingTime);
     }
 
+    /**
+     * Will receive a Showtime and initialize the seatPackages
+     * @param showTime
+     */
     private void initSeatPackageForShowTime(ShowTime showTime){
         List<SeatPackage> seatPackages = new ArrayList<>();
 
@@ -81,6 +101,11 @@ public class ShowTimeService {
         showTime.setSeatPackages(seatPackages);
     }
 
+    /**
+     * will round up to the closest half an hour
+     * @param dateTime
+     * @return
+     */
     private LocalDateTime roundUpMinutes(LocalDateTime dateTime){
         int numOfMinutesToRoundUpTo = 30;
 

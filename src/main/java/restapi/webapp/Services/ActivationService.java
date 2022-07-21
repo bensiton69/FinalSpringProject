@@ -29,9 +29,4 @@ public class ActivationService {
         crudRepository.save(entity);
     }
 
-    public void DeactivateWithProps(ShowTime showTime, CrudRepository crudRepository) {
-        System.out.println();
-
-    }
-
 }

@@ -16,7 +16,11 @@ public class MovieService {
         this.template = restTemplateBuilder.build();
     }
 
-
+    /**
+     * reach out to external api and get a single movie
+     * @param id of the requested movie
+     * @return CompletableFuture of Movie
+     */
     @Async
     public CompletableFuture<Movie> singleMovie(int id){
         String urlTemplate = String.format("http://localhost:8081/Movies/%s", id);
@@ -24,6 +28,10 @@ public class MovieService {
         return CompletableFuture.completedFuture(aMovieLeg);
     }
 
+    /**
+     * reach out to external api and get a movie's arrau
+     * @return CompletableFuture of Movie[]
+     */
     @Async
     public CompletableFuture<Movie[]> Movies(){
         String urlTemplate = String.format("http://localhost:8081/Movies");

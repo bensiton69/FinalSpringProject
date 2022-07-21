@@ -10,7 +10,6 @@ import restapi.webapp.Dtos.Get.MovieGetDto;
 import restapi.webapp.Dtos.Get.SeatPackageGetDto;
 import restapi.webapp.Dtos.Get.ShowTimeGetDto;
 import restapi.webapp.Dtos.Set.CostumerUserSetDto;
-import restapi.webapp.Dtos.Set.ShowTimeSetDto;
 import restapi.webapp.Models.*;
 
 import java.util.stream.Collectors;
@@ -69,7 +68,7 @@ public class MapperCinema implements IMapperCinema {
         seatPackageGetDto.setId(seatPackage.getId());
         seatPackageGetDto.setStatus(seatPackage.getStatus());
         seatPackageGetDto.setCol(seatPackage.getColNumber());
-        seatPackageGetDto.setRow(seatPackage.getRowNUmber());
+        seatPackageGetDto.setRow(seatPackage.getRowNumber());
 
         return seatPackageGetDto;
     }

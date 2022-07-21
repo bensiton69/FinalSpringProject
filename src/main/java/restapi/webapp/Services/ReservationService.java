@@ -38,7 +38,11 @@ public class ReservationService {
         this.userRepos = userRepos;
     }
 
-
+    /**
+     * create new reservation using locks to avoid multithreading/ async problems
+     * @param seatPackages the requested seats
+     * @param costumerUser the user who order
+     */
     public Optional<Reservation> SafeReservation(List<SeatPackage> seatPackages,
                                                  CostumerUser costumerUser)
     {
@@ -96,7 +100,7 @@ public class ReservationService {
         for (SeatPackage seatPackage : seatPackages)
         {
             logger.info("saving: " + seatPackageRepos.save(new SeatPackage(
-                    seatPackage.getRowNUmber(),
+                    seatPackage.getRowNumber(),
                     seatPackage.getColNumber(),
                     true,
                     seatPackage.getShowTime()
@@ -105,6 +109,11 @@ public class ReservationService {
         }
     }
 
+    /**
+     * Update some reservation and archive the old one
+     * @param oldReservation
+     * @param newReservation
+     */
     public Optional<Reservation> SafePutReservation(Reservation oldReservation, ReservationSetDto newReservation) {
         CostumerUser costumerUser = (userRepos.findById(newReservation.getCostumerUserId()).get());
 

@@ -1,4 +1,4 @@
-package restapi.webapp.controllers;
+package restapi.webapp.Controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,7 +95,7 @@ public class MoviesController implements IControllerInterface<MovieGetDto> {
     @PostMapping("/Movies/AdminActions/AddMovies")
     public ResponseEntity seedMovies(){
         try {
-            asyncRunner.SeedMovies();
+            asyncRunner.SaveMovies();
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Could not seed new movies");
         }

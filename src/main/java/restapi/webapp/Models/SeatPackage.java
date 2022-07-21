@@ -14,7 +14,7 @@ public class SeatPackage implements IActivable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private int rowNUmber;
+    private int rowNumber;
     private int colNumber;
     private boolean isAvailable;
     private Status status = Status.Active;
@@ -28,13 +28,13 @@ public class SeatPackage implements IActivable{
     private ShowTime showTime;
 
     public SeatPackage( int row, int col, boolean isAvailable) {
-        this.rowNUmber = row;
+        this.rowNumber = row;
         this.colNumber = col;
         this.isAvailable = isAvailable;
     }
 
-    public SeatPackage(int rowNUmber, int colNumber, boolean isAvailable, ShowTime showTime) {
-        this.rowNUmber = rowNUmber;
+    public SeatPackage(int rowNumber, int colNumber, boolean isAvailable, ShowTime showTime) {
+        this.rowNumber = rowNumber;
         this.colNumber = colNumber;
         this.isAvailable = isAvailable;
         this.showTime = showTime;

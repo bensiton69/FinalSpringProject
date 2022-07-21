@@ -1,4 +1,4 @@
-package restapi.webapp.controllers;
+package restapi.webapp.Controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,19 +102,7 @@ public class ReservationController implements IControllerInterface<ReservationGe
             seatPackageList.add(seatPackageRepos.findById(id).get());
         }
         Optional<Reservation> optionalReservation = reservationService.SafeReservation(seatPackageList,costumerUser);
-        try{
-            Reservation reservation = optionalReservation.get();
-            ReservationGetDto reservationGetDto = mapperCinema.MapFromReservationToReservationGetDto(reservation);
-            EntityModel<ReservationGetDto> entityReservation = reservationEntityFactory.toModel(reservationGetDto);
-            return
-                    // status code 201
-                    ResponseEntity.created(new URI(entityReservation.getRequiredLink(IanaLinkRelations.SELF)
-                            .getHref())).body(entityReservation);
-        } catch (Exception e) {
-            return
-                    // status code: 400
-                    ResponseEntity.badRequest().body("Cannot create the product corresponding to " + reservationSetDto);
-        }
+        return getResponseEntity(reservationSetDto, optionalReservation);
     }
 
     /**
@@ -129,12 +117,17 @@ public class ReservationController implements IControllerInterface<ReservationGe
         Reservation oldReservation = reservationRepos.findById(id).orElseThrow();
         Optional<Reservation> optionalReservation = reservationService.SafePutReservation(oldReservation, reservationSetDto);
 
-        return getResponseEntity(reservationSetDto, optionalReservation, mapperCinema, reservationEntityFactory);
+        return getResponseEntity(reservationSetDto, optionalReservation);
 
     }
 
-    // TODO: document it
-    static ResponseEntity<?> getResponseEntity(@RequestBody ReservationSetDto reservationSetDto, Optional<Reservation> optionalReservation, IMapperCinema mapperCinema, BuilderEntityFactory<ReservationGetDto> reservationEntityFactory) {
+    /**
+     * will try to get from optional and then map it and add links
+      * @param reservationSetDto
+     * @param optionalReservation
+     * @return
+     */
+    ResponseEntity<?> getResponseEntity(@RequestBody ReservationSetDto reservationSetDto, Optional<Reservation> optionalReservation) {
         try{
             Reservation reservation = optionalReservation.get();
             ReservationGetDto reservationGetDto = mapperCinema.MapFromReservationToReservationGetDto(reservation);
