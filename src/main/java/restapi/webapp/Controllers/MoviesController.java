@@ -102,7 +102,6 @@ public class MoviesController implements IControllerInterface<MovieGetDto> {
         return ResponseEntity.ok("Seed new movies: success");
     }
 
-    // TODO: delete?
     @PostMapping("/Movies/AdminActions/AddSingleMovie")
     public ResponseEntity seedSingleMovie(){
         try {

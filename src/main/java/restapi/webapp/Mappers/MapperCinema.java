@@ -14,7 +14,6 @@ import restapi.webapp.Models.*;
 
 import java.util.stream.Collectors;
 
-//TODO: implements IMapperCinema
 @Component
 public class MapperCinema implements IMapperCinema {
     private static final Logger logger = LoggerFactory.getLogger(MapperCinema.class);
@@ -30,7 +29,6 @@ public class MapperCinema implements IMapperCinema {
         movieGetDto.setYearOfPublish(movie.getYearOfPublish());
         movieGetDto.setGenres(movie.getGenres());
 
-        //TODO: work with map and stream instead
         for (ShowTime showTimeLeg : movie.getShowTimes()) {
             movieGetDto.AddShowTimesAsKVP(MapFromShowTimeToKVP(showTimeLeg));
         }

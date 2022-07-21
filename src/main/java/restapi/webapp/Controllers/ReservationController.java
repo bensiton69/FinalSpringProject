@@ -86,7 +86,6 @@ public class ReservationController implements IControllerInterface<ReservationGe
                                 .collect(Collectors.toList())));
     }
 
-    //TODO: move logic from here
     /**
      * POST request to post new Reservation
      * Using ReservationService

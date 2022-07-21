@@ -11,7 +11,6 @@ import java.util.List;
 
 @Data
 @Entity
-// TODO: change table name to ShowTime
 @Table(name = "showTime")
 @NoArgsConstructor
 public class ShowTime implements IActivable {

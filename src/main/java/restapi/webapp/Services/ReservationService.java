@@ -87,7 +87,6 @@ public class ReservationService {
         Reservation reservation = reservationRepos.findById(id).get();
         List<SeatPackage> seatPackages = reservation.getSeatPackages();
         activationService.Deactivate(reservation, reservationRepos);
-        // TODO: add showtime details
         deactiveSeatPackageAndInsertIntoArchive(seatPackages);
         reservationRepos.save(reservation);
     }

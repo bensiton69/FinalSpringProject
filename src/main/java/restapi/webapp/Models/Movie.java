@@ -22,7 +22,6 @@ public class Movie {
     private String link;
     private int duration;
     private int yearOfPublish;
-    //TODO: Transfer to enum
     private String[] genres;
 
     @OneToMany(
